@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from .forms import ApplicationForm
 from .models import Application
-from accounts.models import JobSeeker
+from accounts.models import JobSeeker,Recruiter
 from jobs.models import Job
 
 
@@ -20,7 +20,11 @@ def apply_job(request, job_id):
 
         if form.is_valid():
             job_seeker = JobSeeker.objects.get(email=request.session['user_email'])
-
+            
+            if Application.objects.filter(job=job, job_seeker=job_seeker).exists():
+                return render(request, 'application-success.html',
+                              {'message': 'You have already applied for this job.'} )
+                
             Application.objects.create(
                 job=job,
                 job_seeker=job_seeker,
@@ -37,13 +41,14 @@ def apply_job(request, job_id):
     else:
         form = ApplicationForm()
 
-    return HttpResponse("Application form backend working")
+    return render(request, 'application-form.html', {'form': form, 'job': job})
 
 
 def view_applicants(request):
     if 'user_type' not in request.session or request.session['user_type'] != 'recruiter':
         return redirect('login')
+    
+    recruiter = Recruiter.objects.filter(email=request.session['user_email']).first()
+    applications = Application.objects.filter(job__recruiter=recruiter)
 
-    applications = Application.objects.all()
-
-    return HttpResponse("Applicants list backend working")
+    return render(request, 'applicants-list.html', {'applications': applications})

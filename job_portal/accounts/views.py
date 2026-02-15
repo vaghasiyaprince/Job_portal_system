@@ -47,7 +47,7 @@ def login_view(request):
             password = form.cleaned_data['password']
 
             try:
-                user = JobSeeker.objects.get(email=email)
+                user = JobSeeker.objects.filter(email=email).first()
                 if check_password(password, user.password):
                     request.session['user_type'] = 'job_seeker'
                     request.session['user_email'] = email
@@ -56,7 +56,7 @@ def login_view(request):
                 pass
 
             try:
-                recruiter = Recruiter.objects.get(email=email)
+                recruiter = Recruiter.objects.filter(email=email).first()
                 if check_password(password, recruiter.password):
                     request.session['user_type'] = 'recruiter'
                     request.session['user_email'] = email
@@ -83,10 +83,10 @@ def dashboard(request):
 
     if user_type == 'job_seeker':
         user = JobSeeker.objects.get(email=user_email)
-        return render(request, 'accounts/job_seeker_dashboard.html', {'user': user})
+        return render(request, 'jobseeker-dashboard.html', {'user': user})
     elif user_type == 'recruiter':
         user = Recruiter.objects.get(email=user_email)
-        return render(request, 'accounts/recruiter_dashboard.html', {'user': user})
+        return render(request, 'recruiter-dashboard.html', {'user': user})
     else:
         return redirect('login')
 

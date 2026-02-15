@@ -36,12 +36,12 @@ def post_job(request):
     else:
         form = JobForm()
 
-    return render(request, 'jobs/post_job.html', {'form': form})
+    return render(request, 'post-job.html', {'form': form})
 
 
 def job_list(request):
     jobs = Job.objects.all()
-    return render(request, 'jobs/job_list.html', {'jobs': jobs})
+    return render(request, 'job-list.html', {'jobs': jobs})
 
 
 def job_detail(request, job_id):
@@ -50,4 +50,4 @@ def job_detail(request, job_id):
     except Job.DoesNotExist:
         return HttpResponse("Job not found")
 
-    return render(request, 'jobs/job_detail.html', {'job': job})
+    return render(request, 'job-details.html', {'job': job})
