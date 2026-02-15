@@ -18,7 +18,7 @@ def job_seeker_register(request):
     else:
         form = JobSeekerRegistrationForm()
         
-    return render(request, 'accounts/job_seeker_register.html', {'form': form})
+    return render(request, 'job_seeker_register.html', {'form': form})
 
 
 def recruiter_register(request):
@@ -36,7 +36,7 @@ def recruiter_register(request):
     else:
         form = RecruiterRegistrationForm()
 
-    return render(request, 'accounts/recruiter_register.html', {'form': form})
+    return render(request, 'recruiter_register.html', {'form': form})
 
 
 def login_view(request):
@@ -69,7 +69,7 @@ def login_view(request):
     else:
         form = LoginForm()
 
-    return render(request, 'accounts/login.html', {'form': form})
+    return render(request, 'login.html', {'form': form})
 
 
 
@@ -89,3 +89,6 @@ def dashboard(request):
         return render(request, 'accounts/recruiter_dashboard.html', {'user': user})
     else:
         return redirect('login')
+
+def home(request):
+    return render(request, 'index.html')

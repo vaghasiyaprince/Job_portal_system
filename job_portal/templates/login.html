@@ -1,33 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - Job Portal</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Job Portal</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+   
+    <nav>
+      <h1>Job Portal System</h1>
+    </nav>
+  
+    <div class="container">
+      <h2>Login</h2>
 
-<nav>
-  <h1>Job Portal System</h1>
-</nav>
+      <form id="loginForm" action="/login" method="POST">
+        <label>Email</label>
+        <input type="email" id="loginEmail" required />
 
-<div class="container">
-  <h2>Login</h2>
+        <label>Password</label>
+        <input type="password" id="loginPassword" required />
 
-  <form id="loginForm">
-    <label>Email</label>
-    <input type="email" id="loginEmail" required>
+        <button type="submit">Login</button>
+      </form>
 
-    <label>Password</label>
-    <input type="password" id="loginPassword" required>
+      <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </div>
 
-    <button type="submit">Login</button>
-  </form>
-
-  <p>Don't have an account? <a href="register.html">Register here</a></p>
-</div>
-
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

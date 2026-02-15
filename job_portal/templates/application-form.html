@@ -1,39 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Apply for Job</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Apply for Job</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav>
+      <h1>Job Application</h1>
+    </nav>
 
-<nav>
-  <h1>Job Application</h1>
-</nav>
+    <div class="container">
+      <h2>Application Form</h2>
 
-<div class="container">
-  <h2>Application Form</h2>
+      <form id="applyForm">
+        <p>You are applying as: <b id="applicantName"></b></p>
 
-  <form id="applyForm">
-    <p>You are applying as: <b id="applicantName"></b></p>
+        <!-- You can add more fields if you want real data collection -->
+        <label>Why do you want to join?</label>
+        <textarea
+          placeholder="Tell us why you're a great fit..."
+          required
+        ></textarea>
 
-    <!-- You can add more fields if you want real data collection -->
-    <label>Why do you want to join?</label>
-    <textarea placeholder="Tell us why you're a great fit..." required></textarea>
+        <label>Resume (simulation)</label>
+        <input type="file" placeholder="Upload resume (not saved)" />
 
-    <label>Resume (simulation)</label>
-    <input type="file" placeholder="Upload resume (not saved)">
+        <button type="submit">Submit Application</button>
+      </form>
 
-    <button type="submit">Submit Application</button>
-  </form>
+      <br />
+      <a href="job-details.html" class="btn">Back</a>
+    </div>
 
-  <br>
-  <a href="job-details.html" class="btn">Back</a>
-</div>
-
-<script src="script.js"></script>
-<script>
-  document.getElementById('applicantName').textContent = getCurrentUser()?.name || "Guest";
-</script>
-</body>
+    <script src="script.js"></script>
+    <script>
+      document.getElementById("applicantName").textContent =
+        getCurrentUser()?.name || "Guest";
+    </script>
+  </body>
 </html>

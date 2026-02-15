@@ -2,87 +2,102 @@
 // Fake database using localStorage
 // =============================================
 
-const USERS_KEY = 'jobportal_users';
-const JOBS_KEY   = 'jobportal_jobs';
-const APPLICATIONS_KEY = 'jobportal_applications';
+const USERS_KEY = "jobportal_users";
+const JOBS_KEY = "jobportal_jobs";
+const APPLICATIONS_KEY = "jobportal_applications";
 
 // Initialize if not exists
 if (!localStorage.getItem(USERS_KEY)) {
   localStorage.setItem(USERS_KEY, JSON.stringify([]));
 }
 if (!localStorage.getItem(JOBS_KEY)) {
-  localStorage.setItem(JOBS_KEY, JSON.stringify([
-    {
-      id: 1,
-      company: "Google",
-      title: "Frontend Developer",
-      category: "Core Software Development Roles",
-      skills: "HTML, CSS, JavaScript, React",
-      description: "Build beautiful and responsive user interfaces."
-    },
-    {
-      id: 2,
-      company: "Microsoft",
-      title: "Backend Developer",
-      category: "Core Software Development Roles",
-      skills: "Node.js, Python, SQL",
-      description: "Develop scalable backend systems and APIs."
-    },
-    {
-      id: 3,
-      company: "Amazon",
-      title: "Machine Learning Engineer",
-      category: "Data & AI Related Roles",
-      skills: "Python, TensorFlow, PyTorch",
-      description: "Build and deploy ML models at scale."
-    },
-    {
-      id: 4,
-      company: "Cloudflare",
-      title: "Cloud Security Engineer",
-      category: "Security & Networking Roles",
-      skills: "Cloud security, firewalls, penetration testing",
-      description: "Protect cloud infrastructure from threats."
-    }
-  ]));
+  localStorage.setItem(
+    JOBS_KEY,
+    JSON.stringify([
+      {
+        id: 1,
+        company: "Google",
+        title: "Frontend Developer",
+        category: "Core Software Development Roles",
+        skills: "HTML, CSS, JavaScript, React",
+        description: "Build beautiful and responsive user interfaces.",
+      },
+      {
+        id: 2,
+        company: "Microsoft",
+        title: "Backend Developer",
+        category: "Core Software Development Roles",
+        skills: "Node.js, Python, SQL",
+        description: "Develop scalable backend systems and APIs.",
+      },
+      {
+        id: 3,
+        company: "Amazon",
+        title: "Machine Learning Engineer",
+        category: "Data & AI Related Roles",
+        skills: "Python, TensorFlow, PyTorch",
+        description: "Build and deploy ML models at scale.",
+      },
+      {
+        id: 4,
+        company: "Cloudflare",
+        title: "Cloud Security Engineer",
+        category: "Security & Networking Roles",
+        skills: "Cloud security, firewalls, penetration testing",
+        description: "Protect cloud infrastructure from threats.",
+      },
+    ]),
+  );
 }
 if (!localStorage.getItem(APPLICATIONS_KEY)) {
   localStorage.setItem(APPLICATIONS_KEY, JSON.stringify([]));
 }
 
 // Helper functions
-function getUsers()          { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
-function saveUsers(users)    { localStorage.setItem(USERS_KEY, JSON.stringify(users)); }
-function getJobs()           { return JSON.parse(localStorage.getItem(JOBS_KEY) || '[]'); }
-function saveJobs(jobs)      { localStorage.setItem(JOBS_KEY, JSON.stringify(jobs)); }
-function getApplications()   { return JSON.parse(localStorage.getItem(APPLICATIONS_KEY) || '[]'); }
-function saveApplications(apps) { localStorage.setItem(APPLICATIONS_KEY, JSON.stringify(apps)); }
+function getUsers() {
+  return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+}
+function saveUsers(users) {
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+function getJobs() {
+  return JSON.parse(localStorage.getItem(JOBS_KEY) || "[]");
+}
+function saveJobs(jobs) {
+  localStorage.setItem(JOBS_KEY, JSON.stringify(jobs));
+}
+function getApplications() {
+  return JSON.parse(localStorage.getItem(APPLICATIONS_KEY) || "[]");
+}
+function saveApplications(apps) {
+  localStorage.setItem(APPLICATIONS_KEY, JSON.stringify(apps));
+}
 
 function getCurrentUser() {
-  const email = localStorage.getItem('currentUser');
+  const email = localStorage.getItem("currentUser");
   if (!email) return null;
   const users = getUsers();
-  return users.find(u => u.email === email) || null;
+  return users.find((u) => u.email === email) || null;
 }
 
 function isLoggedIn() {
-  return !!localStorage.getItem('currentUser');
+  return !!localStorage.getItem("currentUser");
 }
 
 function isRecruiter() {
   const user = getCurrentUser();
-  return user && user.role === 'recruiter';
+  return user && user.role === "recruiter";
 }
 
 // Register
-const registerForm = document.getElementById('registerForm');
+const registerForm = document.getElementById("registerForm");
 if (registerForm) {
-  registerForm.addEventListener('submit', e => {
+  registerForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const name  = document.getElementById('regName').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const pass  = document.getElementById('regPassword').value;
-    const role  = document.getElementById('regRole').value;
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const pass = document.getElementById("regPassword").value;
+    const role = document.getElementById("regRole").value;
 
     if (!name || !email || !pass || !role) {
       alert("Please fill all fields");
@@ -90,7 +105,7 @@ if (registerForm) {
     }
 
     const users = getUsers();
-    if (users.some(u => u.email === email)) {
+    if (users.some((u) => u.email === email)) {
       alert("Email already registered!");
       return;
     }
@@ -103,25 +118,25 @@ if (registerForm) {
 }
 
 // Login
-const loginForm = document.getElementById('loginForm');
+const loginForm = document.getElementById("loginForm");
 if (loginForm) {
-  loginForm.addEventListener('submit', e => {
+  loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim();
-    const pass  = document.getElementById('loginPassword').value;
+    const email = document.getElementById("loginEmail").value.trim();
+    const pass = document.getElementById("loginPassword").value;
 
     const users = getUsers();
-    const user = users.find(u => u.email === email && u.password === pass);
+    const user = users.find((u) => u.email === email && u.password === pass);
 
     if (!user) {
       alert("Invalid email or password");
       return;
     }
 
-    localStorage.setItem('currentUser', email);
+    localStorage.setItem("currentUser", email);
     alert("Login successful!");
 
-    if (user.role === 'jobseeker') {
+    if (user.role === "jobseeker") {
       window.location.href = "jobseeker-dashboard.html";
     } else {
       window.location.href = "recruiter-dashboard.html";
@@ -131,14 +146,16 @@ if (loginForm) {
 
 // Logout function (add to buttons where needed)
 function logout() {
-  localStorage.removeItem('currentUser');
+  localStorage.removeItem("currentUser");
   window.location.href = "index.html";
 }
 
 // Protect recruiter pages
-if (window.location.pathname.includes('recruiter') ||
-    window.location.pathname.includes('post-job') ||
-    window.location.pathname.includes('applicants')) {
+if (
+  window.location.pathname.includes("recruiter") ||
+  window.location.pathname.includes("post-job") ||
+  window.location.pathname.includes("applicants")
+) {
   if (!isLoggedIn() || !isRecruiter()) {
     alert("Please login as Recruiter to access this page");
     window.location.href = "login.html";
@@ -146,29 +163,29 @@ if (window.location.pathname.includes('recruiter') ||
 }
 
 // Protect apply page
-if (window.location.pathname.includes('application-form.html')) {
+if (window.location.pathname.includes("application-form.html")) {
   if (!isLoggedIn()) {
     alert("Please login to apply for jobs");
-    localStorage.setItem('redirectAfterLogin', window.location.href);
+    localStorage.setItem("redirectAfterLogin", window.location.href);
     window.location.href = "login.html";
   }
 }
 
 // Job list – search + filter
-const jobListContainer = document.getElementById('jobListContainer');
+const jobListContainer = document.getElementById("jobListContainer");
 if (jobListContainer) {
   const jobs = getJobs();
 
   function renderJobs(jobsToShow) {
-    jobListContainer.innerHTML = '';
+    jobListContainer.innerHTML = "";
     if (jobsToShow.length === 0) {
-      jobListContainer.innerHTML = '<p>No jobs found.</p>';
+      jobListContainer.innerHTML = "<p>No jobs found.</p>";
       return;
     }
 
-    jobsToShow.forEach(job => {
-      const div = document.createElement('div');
-      div.className = 'job-card';
+    jobsToShow.forEach((job) => {
+      const div = document.createElement("div");
+      div.className = "job-card";
       div.innerHTML = `
         <h3>${job.title}</h3>
         <p><b>Company:</b> ${job.company}</p>
@@ -182,24 +199,25 @@ if (jobListContainer) {
   renderJobs(jobs);
 
   // Search
-  document.getElementById('searchInput')?.addEventListener('input', e => {
+  document.getElementById("searchInput")?.addEventListener("input", (e) => {
     const term = e.target.value.toLowerCase().trim();
-    const filtered = jobs.filter(j =>
-      j.company.toLowerCase().includes(term) ||
-      j.title.toLowerCase().includes(term) ||
-      j.category.toLowerCase().includes(term)
+    const filtered = jobs.filter(
+      (j) =>
+        j.company.toLowerCase().includes(term) ||
+        j.title.toLowerCase().includes(term) ||
+        j.category.toLowerCase().includes(term),
     );
     renderJobs(filtered);
   });
 }
 
 // Job details
-const jobDetailContainer = document.getElementById('jobDetailContainer');
+const jobDetailContainer = document.getElementById("jobDetailContainer");
 if (jobDetailContainer) {
   const urlParams = new URLSearchParams(window.location.search);
-  const id = parseInt(urlParams.get('id'));
+  const id = parseInt(urlParams.get("id"));
   const jobs = getJobs();
-  const job = jobs.find(j => j.id === id);
+  const job = jobs.find((j) => j.id === id);
 
   if (!job) {
     jobDetailContainer.innerHTML = "<h2>Job not found</h2>";
@@ -216,13 +234,13 @@ if (jobDetailContainer) {
 }
 
 // Application form
-const applyForm = document.getElementById('applyForm');
+const applyForm = document.getElementById("applyForm");
 if (applyForm) {
-  applyForm.addEventListener('submit', e => {
+  applyForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const urlParams = new URLSearchParams(window.location.search);
-    const jobId = parseInt(urlParams.get('id'));
+    const jobId = parseInt(urlParams.get("id"));
 
     if (!jobId) {
       alert("Invalid job");
@@ -235,7 +253,7 @@ if (applyForm) {
       jobId,
       applicantEmail: getCurrentUser().email,
       name: getCurrentUser().name,
-      appliedAt: new Date().toISOString()
+      appliedAt: new Date().toISOString(),
       // resume, etc. – not really stored
     });
     saveApplications(apps);
@@ -245,7 +263,7 @@ if (applyForm) {
 }
 
 // Applicants list (for recruiter)
-const applicantsListContainer = document.getElementById('applicantsList');
+const applicantsListContainer = document.getElementById("applicantsList");
 if (applicantsListContainer) {
   const apps = getApplications();
   const jobs = getJobs();
@@ -255,21 +273,21 @@ if (applicantsListContainer) {
   } else {
     const grouped = {};
 
-    apps.forEach(app => {
+    apps.forEach((app) => {
       if (!grouped[app.jobId]) grouped[app.jobId] = [];
       grouped[app.jobId].push(app);
     });
 
     for (const jobId in grouped) {
-      const job = jobs.find(j => j.id == jobId);
+      const job = jobs.find((j) => j.id == jobId);
       if (!job) continue;
 
-      const h3 = document.createElement('h3');
+      const h3 = document.createElement("h3");
       h3.textContent = `${job.title} @ ${job.company} (${grouped[jobId].length} applicants)`;
       applicantsListContainer.appendChild(h3);
 
-      grouped[jobId].forEach(app => {
-        const p = document.createElement('p');
+      grouped[jobId].forEach((app) => {
+        const p = document.createElement("p");
         p.innerHTML = `
           ${app.name} (${app.applicantEmail})
           <button onclick="alert('Resume download simulation for ${app.name}')">Download Resume</button>
@@ -282,16 +300,16 @@ if (applicantsListContainer) {
 }
 
 // Post job (recruiter)
-const postJobForm = document.getElementById('postJobForm');
+const postJobForm = document.getElementById("postJobForm");
 if (postJobForm) {
-  postJobForm.addEventListener('submit', e => {
+  postJobForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const title       = document.getElementById('jobTitle').value.trim();
-    const company     = document.getElementById('companyName').value.trim();
-    const category    = document.getElementById('jobCategory').value;
-    const skills      = document.getElementById('skills').value.trim();
-    const description = document.getElementById('description').value.trim();
+    const title = document.getElementById("jobTitle").value.trim();
+    const company = document.getElementById("companyName").value.trim();
+    const category = document.getElementById("jobCategory").value;
+    const skills = document.getElementById("skills").value.trim();
+    const description = document.getElementById("description").value.trim();
 
     if (!title || !company || !category || !skills || !description) {
       alert("Please fill all fields");
@@ -299,7 +317,7 @@ if (postJobForm) {
     }
 
     const jobs = getJobs();
-    const newId = jobs.length ? Math.max(...jobs.map(j => j.id)) + 1 : 1;
+    const newId = jobs.length ? Math.max(...jobs.map((j) => j.id)) + 1 : 1;
 
     jobs.push({
       id: newId,
@@ -307,7 +325,7 @@ if (postJobForm) {
       title,
       category,
       skills,
-      description
+      description,
     });
 
     saveJobs(jobs);
