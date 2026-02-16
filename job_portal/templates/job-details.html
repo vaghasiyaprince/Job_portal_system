@@ -1,24 +1,44 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Job Details</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <nav>
-      <h1>Job Portal</h1>
-      <button onclick="logout()" class="btn">Logout</button>
-    </nav>
 
-    <div class="container">
-      <h2>Job Details</h2>
-      <div id="jobDetailContainer"></div>
+<head>
+  <meta charset="UTF-8" />
+  <title>Job Details</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
-      <br />
-      <a href="job-list.html" class="btn">Back to Jobs</a>
+<body>
+  <nav>
+    <h1>Job Portal</h1>
+    <a href="{% url 'logout' %}" class="btn">Logout</a>
+  </nav>
+
+  <div class="container">
+    <h2>Job Details</h2>
+    <div class="card">
+      <h2>{{ job.job_title }}</h2>
+
+      <p><strong>Company:</strong> {{ job.company_name }}</p>
+
+      <p><strong>Required Skills:</strong><br>
+        {{ job.skills_required }}
+      </p>
+
+      <p><strong>Description:</strong><br>
+        {{ job.job_description }}
+      </p>
+
+      <a href="{% url 'apply-job' job.id %}" class="btn">Apply Now</a>
+
     </div>
 
-    <script src="script.js"></script>
-  </body>
+  </div>
+  <br />
+  <a href="{% url 'job-list' %}" class="btn">Back to Jobs</a>
+  </div>
+
+</body>
+
 </html>

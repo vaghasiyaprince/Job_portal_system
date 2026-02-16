@@ -1,33 +1,46 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Available Jobs</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <nav>
-      <h1>Job Portal</h1>
-      <button onclick="logout()" class="btn">Logout</button>
-    </nav>
 
-    <div class="container">
-      <h2>Available Jobs</h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Available Jobs</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search jobs by company, title or category..."
-        style="width: 100%; padding: 12px; margin-bottom: 20px"
-      />
+<body>
+  <nav>
+    <h1>Job Portal</h1>
+    <a href="{% url 'logout' %}" class="btn">Logout</a>
+  </nav>
 
-      <div id="jobListContainer" style="display: grid; gap: 20px"></div>
+  <div class="container">
+    <h2>Available Jobs</h2>
 
-      <br />
-      <a href="jobseeker-dashboard.html" class="btn">Back to Dashboard</a>
+    <input type="text" id="searchInput" placeholder="Search jobs by company, title or category..."
+      style="width: 100%; padding: 12px; margin-bottom: 20px" />
+
+    <div style="display: grid; gap: 20px">
+
+      {% for job in jobs %}
+      <div class="card">
+        <h3>{{ job.job_title }}</h3>
+        <p><strong>Company:</strong> {{ job.company_name }}</p>
+        <p><strong>Skills:</strong> {{ job.skills_required }}</p>
+
+        <a href="{% url 'job-details' job.id %}" class="btn">View Details</a>
+      </div>
+      {% empty %}
+      <p>No jobs available right now.</p>
+      {% endfor %}
+
     </div>
+    <br />
+    <a href="{% url 'jobseeker-dashboard' %}" class="btn">Back to Dashboard</a>
+  </div>
 
-    <script src="script.js"></script>
-  </body>
+</body>
+
 </html>

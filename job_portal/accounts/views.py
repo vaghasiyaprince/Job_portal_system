@@ -1,94 +1,109 @@
 from django.shortcuts import render, redirect
-from .forms import JobSeekerRegistrationForm, RecruiterRegistrationForm, LoginForm
+from .forms import LoginForm
 from .models import JobSeeker, Recruiter
 from django.contrib.auth.hashers import make_password, check_password
 
 
-def job_seeker_register(request):
-    if request.method == 'POST':
-        form = JobSeekerRegistrationForm(request.POST)
-        if form.is_valid():
+# ================= REGISTER =================
+def register(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        role = request.POST.get("role")
+        company = request.POST.get("company_name")
+
+        # basic validation
+        if not name or not email or not password or not role:
+            return render(request, "register.html", {"error": "All fields are required"})
+
+        # prevent duplicate email
+        if JobSeeker.objects.filter(email=email).exists() or Recruiter.objects.filter(email=email).exists():
+            return render(request, "register.html", {"error": "Email already registered"})
+
+        if role == "jobseeker":
             JobSeeker.objects.create(
-                name=form.cleaned_data['name'],
-                contact=form.cleaned_data['contact'],
-                email=form.cleaned_data['email'],
-                password=make_password(form.cleaned_data['password'])
+                name=name,
+                email=email,
+                password=make_password(password)
             )
-            return redirect('login')
-    else:
-        form = JobSeekerRegistrationForm()
-        
-    return render(request, 'job_seeker_register.html', {'form': form})
 
+        elif role == "recruiter":
+            if not company:
+                return render(request, "register.html", {"error": "Company name required"})
 
-def recruiter_register(request):
-    if request.method == 'POST':
-        form = RecruiterRegistrationForm(request.POST)
-        if form.is_valid():
             Recruiter.objects.create(
-                name=form.cleaned_data['name'],
-                contact=form.cleaned_data['contact'],
-                email=form.cleaned_data['email'],
-                password=make_password(form.cleaned_data['password']),
-                company_name=form.cleaned_data['company_name']
+                name=name,
+                email=email,
+                password=make_password(password),
+                company_name=company
             )
-            return redirect('login')
-    else:
-        form = RecruiterRegistrationForm()
 
-    return render(request, 'recruiter_register.html', {'form': form})
+        return redirect("login")
+
+    return render(request, "register.html")
 
 
+# ================= LOGIN =================
 def login_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = LoginForm(request.POST)
+
         if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
 
-            try:
-                user = JobSeeker.objects.filter(email=email).first()
-                if check_password(password, user.password):
-                    request.session['user_type'] = 'job_seeker'
-                    request.session['user_email'] = email
-                    return redirect('dashboard')
-            except JobSeeker.DoesNotExist:
-                pass
+            # check job seeker
+            user = JobSeeker.objects.filter(email=email).first()
+            if user and check_password(password, user.password):
+                request.session["user_type"] = "job_seeker"
+                request.session["user_email"] = email
+                return redirect("dashboard")
 
-            try:
-                recruiter = Recruiter.objects.filter(email=email).first()
-                if check_password(password, recruiter.password):
-                    request.session['user_type'] = 'recruiter'
-                    request.session['user_email'] = email
-                    return redirect('dashboard')  
-            except Recruiter.DoesNotExist:
-                pass
+            # check recruiter
+            recruiter = Recruiter.objects.filter(email=email).first()
+            if recruiter and check_password(password, recruiter.password):
+                request.session["user_type"] = "recruiter"
+                request.session["user_email"] = email
+                return redirect("dashboard")
 
             form.add_error(None, "Invalid email or password")
 
     else:
         form = LoginForm()
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, "login.html", {"form": form})
 
 
-
+# ================= LOGOUT =================
 def logout_view(request):
     request.session.flush()
-    return redirect('login')
+    return redirect("login")
 
+
+# ================= DASHBOARD =================
 def dashboard(request):
-    user_type = request.session.get('user_type')
-    user_email = request.session.get('user_email')
+    user_type = request.session.get("user_type")
+    user_email = request.session.get("user_email")
 
-    if user_type == 'job_seeker':
-        user = JobSeeker.objects.get(email=user_email)
-        return render(request, 'jobseeker-dashboard.html', {'user': user})
-    elif user_type == 'recruiter':
-        user = Recruiter.objects.get(email=user_email)
-        return render(request, 'recruiter-dashboard.html', {'user': user})
-    else:
-        return redirect('login')
+    if not user_type or not user_email:
+        return redirect("login")
 
+    if user_type == "job_seeker":
+        user = JobSeeker.objects.filter(email=user_email).first()
+        if not user:
+            return redirect("login")
+        return render(request, "jobseeker-dashboard.html", {"user": user})
+
+    elif user_type == "recruiter":
+        user = Recruiter.objects.filter(email=user_email).first()
+        if not user:
+            return redirect("login")
+        return render(request, "recruiter-dashboard.html", {"user": user})
+
+    return redirect("login")
+
+
+# ================= HOME =================
 def home(request):
-    return render(request, 'index.html')
+    return render(request, "index.html")

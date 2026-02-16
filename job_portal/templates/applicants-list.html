@@ -1,26 +1,58 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Applicants List - Recruiter</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <nav>
-      <h1>Job Portal - Recruiter</h1>
-      <button onclick="logout()" class="btn">Logout</button>
-    </nav>
 
-    <div class="container">
-      <h2>Applications Received</h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Applicants List - Recruiter</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
-      <div id="applicantsList"></div>
+<body>
+  <nav>
+    <h1>Job Portal - Recruiter</h1>
+    <a href="{% url 'logout' %}" class="btn">Logout</a>
+  </nav>
 
-      <br /><br />
-      <a href="recruiter-dashboard.html" class="btn">Back to Dashboard</a>
+  <div class="container">
+    <h2>Applications Received</h2>
+
+    {% for app in applications %}
+    <div class="card">
+
+      <h3>{{ app.job_seeker.name }}</h3>
+
+      <p><strong>Email:</strong> {{ app.job_seeker.email }}</p>
+
+      <p><strong>College:</strong> {{ app.college }}</p>
+
+      <p><strong>Branch:</strong> {{ app.branch }}</p>
+
+      <p><strong>Result:</strong> {{ app.result }}</p>
+
+      <p><strong>Experience:</strong><br>
+        {{ app.experience }}
+      </p>
+
+      <p><strong>Reason to Join:</strong><br>
+        {{ app.reason_to_join }}
+      </p>
+
+      <a href="{{ app.resume.url }}" class="btn">Download Resume</a>
+
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    {% empty %}
+    <p>No applications received yet.</p>
+    {% endfor %}
+
+
+    <br /><br />
+    <a href="{% url 'recruiter-dashboard' %}" class="btn">Back to Dashboard</a>
+  </div>
+
+</body>
+
 </html>

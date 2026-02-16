@@ -1,15 +1,17 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Job Posted Successfully</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
   <body>
     <nav>
       <h1>Job Portal System</h1>
-      <button onclick="logout()" class="btn">Logout</button>
+      <a href="{% url 'logout' %}" class="btn">Logout</a>
     </nav>
 
     <div class="container success">
@@ -19,13 +21,13 @@
 
       <div style="margin: 2rem 0; text-align: center">
         <a
-          href="post-job.html"
+          href="{% url 'post-job' %}"
           class="btn"
           style="margin-right: 1rem; background: #27ae60"
         >
           Post Another Job
         </a>
-        <a href="recruiter-dashboard.html" class="btn"> Back to Dashboard </a>
+        <a href="{% url 'recruiter-dashboard' %}" class="btn"> Back to Dashboard </a>
       </div>
     </div>
 

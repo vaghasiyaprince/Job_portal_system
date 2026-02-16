@@ -1,10 +1,12 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Job Portal System</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
   <body>
     <nav>
@@ -19,16 +21,16 @@
       <p>Please select your role to continue</p>
 
       <div class="role-buttons">
-        <a href="jobseeker-dashboard.html" class="big-btn jobseeker"
+        <a href="{% url 'dashboard' %}" class="big-btn jobseeker"
           >I'm a Job Seeker</a
         >
-        <a href="recruiter-dashboard.html" class="big-btn recruiter"
+        <a href="{% url 'dashboard' %}" class="big-btn recruiter"
           >I'm a Recruiter</a
         >
       </div>
 
       <p class="small-link">
-        Don't have an account? <a href="register.html">Register here</a>
+        Don't have an account? <a href="{% url 'register' %}">Register here</a>
       </p>
     </div>
   </body>

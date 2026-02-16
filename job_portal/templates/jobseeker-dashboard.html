@@ -1,16 +1,18 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Job Seeker Dashboard</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
   <body>
     <nav>
       <h1>Job Portal</h1>
       <div>
-        Welcome, <span id="userName"></span>
-        <button onclick="logout()" class="btn">Logout</button>
+        Welcome, <h2>{{ user.name }}</h2>
+        <a href="{% url 'logout' %}" class="btn">Logout</a>
       </div>
     </nav>
 
@@ -26,7 +28,7 @@
       <div id="jobListContainer"></div>
 
       <br /><br />
-      <a href="index.html" class="btn">Back to Home</a>
+      <a href="{% url 'index' %}" class="btn">Back to Home</a>
     </div>
 
     <script src="script.js"></script>

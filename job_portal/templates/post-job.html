@@ -1,9 +1,11 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Post a Job</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
   <body>
     <nav><h1>Post a Job</h1></nav>
@@ -11,7 +13,10 @@
     <div class="container">
       <h2>Post New Job</h2>
 
-      <form id="postJobForm">
+      <form id="postJobForm" action="/post-job" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
         <label>Job Title</label>
         <input type="text" id="jobTitle" required />
 
@@ -41,7 +46,7 @@
         <button type="submit">Post Job</button>
       </form>
 
-      <a href="recruiter-dashboard.html" class="btn">Back</a>
+      <a href="{% url 'recruiter-dashboard' %}" class="btn">Back</a>
     </div>
 
     <script src="script.js"></script>
