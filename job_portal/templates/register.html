@@ -1,10 +1,8 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Register - Job Portal</title>
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
@@ -17,59 +15,55 @@
 <div class="container">
   <h2>Register</h2>
 
-  <form id="registerForm" action="" method="POST">
+  <!-- SHOW ERROR -->
+  {% if error %}
+    <p style="color:red; text-align:center;">{{ error }}</p>
+  {% endif %}
+
+  <form method="POST">
     {% csrf_token %}
-   
-    <label>Full Name <span style="color:#e74c3c;">*</span></label>
-    <input type="text" name="name" id="regName" required>
 
-    <label>Email <span style="color:#e74c3c;">*</span></label>
-    <input type="email" name="email" id="regEmail" required>
+    <label>Full Name *</label>
+    <input type="text" name="name" required>
 
-    <label>Password <span style="color:#e74c3c;">*</span></label>
-    <input type="password" name="password" id="regPassword" required>
+    <label>Email *</label>
+    <input type="email" name="email" required>
 
-    <label>Role <span style="color:#e74c3c;">*</span></label>
+    <label>Password *</label>
+    <input type="password" name="password" required>
+
+    <label>Role *</label>
     <select name="role" id="regRole" required>
       <option value="">Select your role</option>
-      <option value="jobseeker">Job Seeker</option>
+      <option value="job_seeker">Job Seeker</option>
       <option value="recruiter">Recruiter</option>
     </select>
 
-    <!-- Company Name – hidden by default -->
-    <div id="companyRow" style="display: none; margin-top: 1.2rem;">
-      <label>Company Name <span style="color:#e74c3c;">*</span></label>
-      <input type="text" name="company_name" id="regCompany" placeholder="e.g. Tech Solutions Pvt Ltd" required>
+    <!-- recruiter only -->
+    <div id="companyRow" style="display:none; margin-top:10px;">
+      <label>Company Name *</label>
+      <input type="text" name="company_name" id="regCompany">
     </div>
 
     <button type="submit">Register</button>
   </form>
 
-  <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+  <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
 </div>
 
-<script src="{% static 'js/script.js' %}"></script>
-
 <script>
-// Show/hide company name field only for recruiters
 const roleSelect = document.getElementById('regRole');
 const companyRow = document.getElementById('companyRow');
 
-if (roleSelect && companyRow) {
-  roleSelect.addEventListener('change', function() {
-    if (this.value === 'recruiter') {
-      companyRow.style.display = 'block';
-      // The input inside is already required → browser will enforce it
-    } else {
-      companyRow.style.display = 'none';
-      // Optional: clear the value when hidden
-      document.getElementById('regCompany').value = '';
-    }
-  });
-
-  // Trigger once on page load (important if browser remembers previous selection)
-  roleSelect.dispatchEvent(new Event('change'));
-}
+roleSelect.addEventListener('change', function() {
+  if (this.value === 'recruiter') {
+    companyRow.style.display = 'block';
+  } else {
+    companyRow.style.display = 'none';
+    document.getElementById('regCompany').value = '';
+  }
+});
 </script>
+
 </body>
 </html>

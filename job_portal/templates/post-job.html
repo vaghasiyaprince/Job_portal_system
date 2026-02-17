@@ -1,54 +1,46 @@
 {% load static %}
-
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Post a Job</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
-  <body>
-    <nav><h1>Post a Job</h1></nav>
+<head>
+  <meta charset="UTF-8">
+  <title>Post a Job</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
 
-    <div class="container">
-      <h2>Post New Job</h2>
+<nav><h1>Post a Job</h1></nav>
 
-      <form id="postJobForm" action="/post-job" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
+<div class="container">
+  <h2>Post New Job</h2>
 
-        <label>Job Title</label>
-        <input type="text" id="jobTitle" required />
+  <form method="POST">
+    {% csrf_token %}
 
-        <label>Company Name</label>
-        <input type="text" id="companyName" required />
+    <label>Job Title</label>
+    <input type="text" name="job_title" required>
 
-        <label>Category</label>
-        <select id="jobCategory" required>
-          <option value="">Select category</option>
-          <option>Core Software Development Roles</option>
-          <option>Data & AI Related Roles</option>
-          <option>Security & Networking Roles</option>
-          <option>Cloud & Infrastructure Roles</option>
-        </select>
+    <label>Company Name</label>
+    <input type="text" name="company_name" required>
 
-        <label>Skills Required (comma separated)</label>
-        <input
-          type="text"
-          id="skills"
-          required
-          placeholder="React, Node.js, AWS"
-        />
+    <label>Skills Required (comma separated)</label>
+    <input
+      type="text"
+      name="skills_required"
+      required
+      placeholder="React, Node.js, AWS"
+    >
 
-        <label>Job Description</label>
-        <textarea id="description" required rows="6"></textarea>
+    <label>Job Description</label>
+    <textarea name="job_description" required rows="6"></textarea>
 
-        <button type="submit">Post Job</button>
-      </form>
+    <button type="submit">Post Job</button>
+  </form>
 
-      <a href="{% url 'recruiter-dashboard' %}" class="btn">Back</a>
-    </div>
+  <a href="{% url 'dashboard' %}" class="btn">Back</a>
+</div>
 
-    <script src="script.js"></script>
-  </body>
+</body>
 </html>

@@ -10,34 +10,36 @@ def post_job(request):
         return redirect('login')
 
     if request.method == 'POST':
-        form = JobForm(request.POST)
+        recruiter = Recruiter.objects.filter(
+            email=request.session.get('user_email')
+        ).first()
 
-        if form.is_valid():
-            recruiter = Recruiter.objects.filter(
-                email=request.session.get('user_email')
-            ).first()
+        if not recruiter:
+            return redirect('login')
 
-            if not recruiter:
-                return redirect('login')
+        job_title = request.POST.get('job_title')
+        company_name = request.POST.get('company_name')
+        skills = request.POST.get('skills_required')
+        description = request.POST.get('job_description')
 
-            skills = form.cleaned_data['skills_required']
-            skills = ", ".join([s.strip() for s in skills.split(",")])
+        if not job_title or not company_name or not skills or not description:
+            return render(request, 'post-job.html', {
+                'error': 'All fields are required'
+            })
 
-            Job.objects.create(
-                recruiter=recruiter,
-                job_title=form.cleaned_data['job_title'],
-                skills_required=skills,
-                job_description=form.cleaned_data['job_description'],
-                company_name=form.cleaned_data['company_name']
-            )
+        skills = ", ".join([s.strip() for s in skills.split(",")])
 
-            return redirect('dashboard')
+        Job.objects.create(
+            recruiter=recruiter,
+            job_title=job_title,
+            skills_required=skills,
+            job_description=description,
+            company_name=company_name
+        )
 
-    else:
-        form = JobForm()
+        return redirect('dashboard')
 
-    return render(request, 'post-job.html', {'form': form})
-
+    return render(request, 'post-job.html')
 
 def job_list(request):
     jobs = Job.objects.all()

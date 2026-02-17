@@ -8,12 +8,11 @@ from django.contrib.auth.hashers import make_password, check_password
 def register(request):
     if request.method == "POST":
         name = request.POST.get("name")
-        email = request.POST.get("email")
+        email = request.POST.get("email").lower()
         password = request.POST.get("password")
         role = request.POST.get("role")
         company = request.POST.get("company_name")
 
-        # basic validation
         if not name or not email or not password or not role:
             return render(request, "register.html", {"error": "All fields are required"})
 
@@ -21,7 +20,7 @@ def register(request):
         if JobSeeker.objects.filter(email=email).exists() or Recruiter.objects.filter(email=email).exists():
             return render(request, "register.html", {"error": "Email already registered"})
 
-        if role == "jobseeker":
+        if role == "job_seeker":
             JobSeeker.objects.create(
                 name=name,
                 email=email,
@@ -42,7 +41,6 @@ def register(request):
         return redirect("login")
 
     return render(request, "register.html")
-
 
 # ================= LOGIN =================
 def login_view(request):
