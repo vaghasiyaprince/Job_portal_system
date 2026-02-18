@@ -6,15 +6,19 @@
     <meta charset="UTF-8" />
     <title>Job Seeker Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    
   </head>
   <body>
     <nav>
-      <h1>Job Portal</h1>
-      <div>
-        Welcome, <h2>{{ user.name }}</h2>
-        <a href="{% url 'logout' %}" class="btn">Logout</a>
-      </div>
-    </nav>
+  <div class="nav-content">
+    <h1>{% if user.is_recruiter %}Recruiter{% else %}Job Seeker{% endif %} Dashboard</h1>
+    
+    <div class="user-info">
+      <span>Welcome, <strong>{{ user.name }}</strong></span>
+      <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
+    </div>
+  </div>
+</nav>
 
     <div class="container">
       <h2>Find Your Dream Job</h2>
@@ -28,7 +32,9 @@
       <div id="jobListContainer"></div>
 
       <br /><br />
+      
       <a href="{% url 'home' %}" class="btn">Back to Home</a>
+       
     </div>
 
     <script src="script.js"></script>

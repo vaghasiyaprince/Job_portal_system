@@ -8,10 +8,16 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
   <body>
-    <nav>
-      <h1>Recruiter Dashboard</h1>
-      <a href="{% url 'logout' %}" class="btn">Logout</a>
-    </nav>
+   <nav>
+  <div class="nav-content">
+    <h1>{% if user.is_recruiter %}Recruiter{% else %}Job Seeker{% endif %} Dashboard</h1>
+    
+    <div class="user-info">
+      <span>Welcome, <strong>{{ user.name }}</strong></span>
+      <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
+    </div>
+  </div>
+</nav>
 
     <div class="container">
       <h2>Welcome, {{ user.name }}</h2>

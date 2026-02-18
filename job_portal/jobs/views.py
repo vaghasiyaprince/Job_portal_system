@@ -53,3 +53,5 @@ def job_detail(request, job_id):
         return HttpResponse("Job not found")
 
     return render(request, 'job-details.html', {'job': job})
+
+def landing_page() # created by hitesh. so, you will complete this. hitesh has informed you only.
