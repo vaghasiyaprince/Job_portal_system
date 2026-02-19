@@ -14,6 +14,10 @@
 
 <div class="container">
   <h2>Login</h2>
+  {% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+
 
   {% if form.non_field_errors %}
     <p style="color:red;">{{ form.non_field_errors }}</p>
@@ -21,6 +25,8 @@
 
   <form method="POST">
     {% csrf_token %}
+
+    <input type="hidden" name="role" value="{{ request.GET.role }}">
 
     <label>Email</label>
     <input type="email" name="email" required>

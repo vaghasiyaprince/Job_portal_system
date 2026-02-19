@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from .forms import LoginForm
 from .models import JobSeeker, Recruiter
 from django.contrib.auth.hashers import make_password, check_password
-
+from jobs.models import Job
+from applications.models import Application
 
 # ================= REGISTER =================
 def register(request):
@@ -44,6 +45,8 @@ def register(request):
 
 # ================= LOGIN =================
 def login_view(request):
+    selected_role = request.GET.get("role") or request.POST.get("role")
+
     if request.method == "POST":
         form = LoginForm(request.POST)
 
@@ -54,6 +57,12 @@ def login_view(request):
             # check job seeker
             user = JobSeeker.objects.filter(email=email).first()
             if user and check_password(password, user.password):
+                if selected_role == "recruiter":
+                    return render(request, "login.html", {
+                        "form": form,
+                        "error": "You are not a recruiter"
+                    })
+
                 request.session["user_type"] = "job_seeker"
                 request.session["user_email"] = email
                 return redirect("dashboard")
@@ -61,6 +70,12 @@ def login_view(request):
             # check recruiter
             recruiter = Recruiter.objects.filter(email=email).first()
             if recruiter and check_password(password, recruiter.password):
+                if selected_role == "job_seeker":
+                    return render(request, "login.html", {
+                        "form": form,
+                        "error": "You are not a job seeker"
+                    })
+
                 request.session["user_type"] = "recruiter"
                 request.session["user_email"] = email
                 return redirect("dashboard")
@@ -91,7 +106,8 @@ def dashboard(request):
         user = JobSeeker.objects.filter(email=user_email).first()
         if not user:
             return redirect("login")
-        return render(request, "jobseeker-dashboard.html", {"user": user})
+        job = Job.objects.all().order_by("-created_at")
+        return render(request, "jobseeker-dashboard.html", {"user": user, "jobs": job})
 
     elif user_type == "recruiter":
         user = Recruiter.objects.filter(email=user_email).first()

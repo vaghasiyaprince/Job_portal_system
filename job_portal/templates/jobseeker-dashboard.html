@@ -2,17 +2,18 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Job Seeker Dashboard</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-    
-  </head>
-  <body>
-    <nav>
+<head>
+  <meta charset="UTF-8" />
+  <title>Job Seeker Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+
+<body>
+
+<nav>
   <div class="nav-content">
-    <h1>{% if user.is_recruiter %}Recruiter{% else %}Job Seeker{% endif %} Dashboard</h1>
-    
+    <h1>Job Seeker Dashboard</h1>
+
     <div class="user-info">
       <span>Welcome, <strong>{{ user.name }}</strong></span>
       <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
@@ -20,27 +21,47 @@
   </div>
 </nav>
 
-    <div class="container">
-      <h2>Find Your Dream Job</h2>
+<div class="container">
+  <h2>Find Your Dream Job</h2>
 
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search by company, title, role..."
-      />
+  <!-- Search box (optional) -->
+  <input
+    type="text"
+    placeholder="Search jobs..."
+  />
 
-      <div id="jobListContainer"></div>
+  <br><br>
 
-      <br /><br />
-      
-      <a href="{% url 'home' %}" class="btn">Back to Home</a>
-       
-    </div>
+  <!-- JOB LIST START -->
+  <div id="jobListContainer">
 
-    <script src="script.js"></script>
-    <script>
-      const user = getCurrentUser();
-      if (user) document.getElementById("userName").textContent = user.name;
-    </script>
-  </body>
+    {% for job in jobs %}
+      <div class="job-card">
+
+        <h3>{{ job.job_title }}</h3>
+
+        <p><strong>Company:</strong> {{ job.company_name }}</p>
+
+        <p><strong>Skills Required:</strong> {{ job.skills_required }}</p>
+
+        <p>{{ job.job_description|truncatewords:20 }}</p>
+
+        <a href="{% url 'job_detail' job.id %}" class="btn">
+          View Details
+        </a>
+
+      </div>
+    {% empty %}
+        <p>No jobs available right now.</p>
+    {% endfor %}
+
+  </div>
+  <!-- JOB LIST END -->
+
+  <br><br>
+  <a href="{% url 'home' %}" class="btn">Back to Home</a>
+
+</div>
+
+</body>
 </html>

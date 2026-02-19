@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .forms import ApplicationForm
 from .models import Application
@@ -7,8 +7,8 @@ from jobs.models import Job
 
 
 def apply_job(request, job_id):
-    if 'user_type' not in request.session or request.session['user_type'] != 'job_seeker':
-        return redirect('login')
+    if request.session.get('user_type') != 'job_seeker':
+        return redirect('dashboard')
 
     try:
         job = Job.objects.get(id=job_id)

@@ -6,8 +6,8 @@ from accounts.models import Recruiter
 
 
 def post_job(request):
-    if 'user_type' not in request.session or request.session['user_type'] != 'recruiter':
-        return redirect('login')
+    if request.session.get('user_type') != 'recruiter':
+        return redirect('login ')
 
     if request.method == 'POST':
         recruiter = Recruiter.objects.filter(
@@ -54,4 +54,3 @@ def job_detail(request, job_id):
 
     return render(request, 'job-details.html', {'job': job})
 
-def landing_page() # created by hitesh. so, you will complete this. hitesh has informed you only.
