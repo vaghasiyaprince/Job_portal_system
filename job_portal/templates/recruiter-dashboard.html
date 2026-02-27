@@ -8,28 +8,37 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
   <body>
-   <nav>
+
+<nav>
   <div class="nav-content">
-    <h1>{% if user.is_recruiter %}Recruiter{% else %}Job Seeker{% endif %} Dashboard</h1>
-    
-    <div class="user-info">
-      <span>Welcome, <strong>{{ user.name }}</strong></span>
-      <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
+
+    <!-- Centered title -->
+    <div class="nav-center">
+      <h1>Job Portal System</h1>
     </div>
+
+    <!-- Right side: tagline + welcome + logout -->
+    <div class="right-side">
+      <!-- <p>Find jobs or hire candidates easily</p> -->
+
+      <div class="user-info">
+        <span>Welcome, <strong>{{ user.name }}</strong></span> <br> <br>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+      </div>
+    </div>
+
   </div>
 </nav>
 
     <div class="container">
-      <h2>Welcome, {{ user.name }}</h2>
-
       <ul class="dashboard-menu">
-        <li><a href="{% url 'post_job' %}" class="big-btn">Post New Job</a></li>
+        <li><a href="{% url 'post_job' %}" class="big-btn">Post New Job</a></li> <br> <br> 
         <li>
           <a href="{% url 'view_applicants' %}" class="big-btn">View Applicants</a>
         </li>
       </ul>
 
-      <br />
+      <br/>
       <a href="{% url 'home' %}" class="btn">Back to Home</a>
     </div>
 

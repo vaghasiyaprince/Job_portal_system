@@ -8,18 +8,30 @@
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 
-<body>
-
+<body> 
+  
 <nav>
   <div class="nav-content">
-    <h1>Job Seeker Dashboard</h1>
 
-    <div class="user-info">
-      <span>Welcome, <strong>{{ user.name }}</strong></span>
-      <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
+    <!-- Centered title -->
+    <div class="nav-center">
+      <h1>Job Portal System</h1>
     </div>
+
+    <!-- Right side: tagline + welcome + logout -->
+    <div class="right-side">
+      <!-- <p>You can find your dream job</p> -->
+
+      <div class="user-info">
+        <span>Welcome, <strong>{{ user.name }}</strong></span> <br>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+      </div>
+    </div>
+
   </div>
 </nav>
+
+ 
 
 <div class="container">
   <h2>Find Your Dream Job</h2>

@@ -10,9 +10,25 @@
   </head>
   <body>
     <nav>
-      <h1>Job Portal - Recruiter</h1>
-      <a href="{% url 'logout' %}" class="btn">Logout</a>
-    </nav>
+  <div class="nav-content">
+
+    <!-- Centered title -->
+    <div class="nav-center">
+      <h1>Job Portal System</h1>
+    </div>
+
+    <!-- Right side: tagline + welcome + logout -->
+    <div class="right-side">
+      <!-- <p>Find jobs or hire candidates easily</p> -->
+
+      <div class="user-info">
+        <!-- <span>Welcome <strong>{{ user.name }}</strong></span> <br> <br> -->
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+      </div>
+    </div>
+
+  </div>
+</nav>
 
     <div class="container">
       <h2>Applicant Details</h2>

@@ -1,10 +1,12 @@
-from django.shortcuts import redirect, render
+# from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .forms import ApplicationForm
 from .models import Application
 from accounts.models import JobSeeker,Recruiter
 from jobs.models import Job
-
+from django.contrib.auth.decorators import login_required
+ 
 
 def apply_job(request, job_id):
     if request.session.get('user_type') != 'job_seeker':
@@ -52,3 +54,28 @@ def view_applicants(request):
     applications = Application.objects.filter(job__recruiter=recruiter)
 
     return render(request, 'applicants-list.html', {'applications': applications})
+
+
+@login_required
+def submit_application(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.job = job
+            application.applicant = request.user
+            application.save()
+            # Optional: success message
+            # messages.success(request, "Application submitted successfully!")
+            return redirect('job_list')   # or wherever you want to go after apply
+
+    else:
+        form = ApplicationForm()
+
+    return render(request, 'application-form.html', {
+        'form': form,
+        'job': job,
+        'job_id': job_id,
+    })

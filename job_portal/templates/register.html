@@ -1,69 +1,86 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Register - Job Portal</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
+  {% load static %}
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Register - Job Portal</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  </head>
+  <body>
 
 <nav>
-  <h1>Job Portal System</h1>
-</nav>
+  <div class="nav-content">
 
-<div class="container">
-  <h2>Register</h2>
-
-  <!-- SHOW ERROR -->
-  {% if error %}
-    <p style="color:red; text-align:center;">{{ error }}</p>
-  {% endif %}
-
-  <form method="POST">
-    {% csrf_token %}
-
-    <label>Full Name *</label>
-    <input type="text" name="name" required>
-
-    <label>Email *</label>
-    <input type="email" name="email" required>
-
-    <label>Password *</label>
-    <input type="password" name="password" required>
-
-    <label>Role *</label>
-    <select name="role" id="regRole" required>
-      <option value="">Select your role</option>
-      <option value="job_seeker">Job Seeker</option>
-      <option value="recruiter">Recruiter</option>
-    </select>
-
-    <!-- recruiter only -->
-    <div id="companyRow" style="display:none; margin-top:10px;">
-      <label>Company Name *</label>
-      <input type="text" name="company_name" id="regCompany">
+    <!-- Centered title -->
+    <div class="nav-center">
+      <h1>Job Portal System</h1>
     </div>
 
-    <button type="submit">Register</button>
-  </form>
+    <!-- Right side: tagline + welcome + logout -->
+    <div class="right-side">
+      <p>Find jobs or hire candidates easily</p>
 
-  <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
-</div>
+      <!-- <div class="user-info">
+        <span>Welcome, <strong>{{ user.name }}</strong></span>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+      </div> -->
+    </div>
 
-<script>
-const roleSelect = document.getElementById('regRole');
-const companyRow = document.getElementById('companyRow');
+  </div>
+</nav>
 
-roleSelect.addEventListener('change', function() {
-  if (this.value === 'recruiter') {
-    companyRow.style.display = 'block';
-  } else {
-    companyRow.style.display = 'none';
-    document.getElementById('regCompany').value = '';
-  }
-});
-</script>
+  <div class="container">
+    <h2>Register</h2>
 
-</body>
-</html>
+    <!-- SHOW ERROR -->
+    {% if error %}
+      <p style="color:red; text-align:center;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <label>Full Name <span class="required">*</span></label>
+      <input type="text" name="name" required>
+
+      <label>Email <span class="required">*</span></label>
+      <input type="email" name="email" required>
+
+      <label>Password <span class="required">*</span></label>
+      <input type="password" name="password" required>
+
+      <label>Role <span class="required">*</span></label>
+      <select name="role" id="regRole" required>
+        <option value="">Select your role</option>
+        <option value="job_seeker">Job Seeker</option>
+        <option value="recruiter">Recruiter</option>
+      </select>
+
+      <!-- recruiter only -->
+      <div id="companyRow" style="display:none; margin-top:10px;">
+        <label>Company Name <span class="required">*</span></label>
+        <input type="text" name="company_name" id="regCompany">
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+  </div>
+
+  <script>
+  const roleSelect = document.getElementById('regRole');
+  const companyRow = document.getElementById('companyRow');
+
+  roleSelect.addEventListener('change', function() {
+    if (this.value === 'recruiter') {
+      companyRow.style.display = 'block';
+    } else {
+      companyRow.style.display = 'none';
+      document.getElementById('regCompany').value = '';
+    }
+  });
+  </script>
+
+  </body>
+  </html>
