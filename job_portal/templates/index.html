@@ -2,46 +2,49 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Job Portal System</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
-  <body>
-<nav>
-  <div class="nav-content">
 
-    <!-- Centered title -->
-    <div class="nav-center">
-      <h1>Job Portal System</h1>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Portal System</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
-    <!-- Right side: tagline + welcome + logout -->
-    <div class="right-side">
-      <p>Find jobs or hire candidates easily</p>
+<body>
+  <nav>
+    <div class="nav-content">
 
-      <!-- <div class="user-info">
+      <!-- Centered title -->
+      <div class="nav-center">
+        <h1>Job Portal System</h1>
+      </div>
+
+      <!-- Right side: tagline + welcome + logout -->
+      <div class="right-side">
+        <p>Find jobs or hire candidates easily</p>
+
+        <!-- <div class="user-info">
         <span>Welcome, <strong>{{ user.name }}</strong></span>
         <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
       </div> -->
-    </div>
-
-  </div>
-</nav>
-
-    <div class="landing-container">
-      <h2>Welcome to Job Portal</h2>
-      <p>Please select your role to continue</p>
-
-      <div class="role-buttons">
-        <a href="{% url 'login' %}?role=job_seeker" class="big-btn recruiter">Job Seeker</a>
-        <a href="{% url 'login' %}?role=recruiter" class="big-btn jobseeker">Recruiter</a>
       </div>
 
-      <p class="small-link">
-        Don't have an account? <a href="{% url 'register' %}">Register here</a>
-      </p>
     </div>
-  </body>
+  </nav>
+
+  <div class="landing-container">
+    <h2>Welcome to Job Portal</h2>
+    <p>Please select your role to continue</p>
+
+    <div class="role-buttons">
+      <a href="{% url 'job_list' %}" class="big-btn jobseeker">Job Seeker</a>
+      <a href="{% url 'recruiter_dashboard' %}" class="big-btn recruiter">Recruiter</a>
+    </div>
+
+    <p class="small-link">
+      Don't have an account? <a href="{% url 'register' %}">Register here</a>
+    </p>
+  </div>
+</body>
+
 </html>

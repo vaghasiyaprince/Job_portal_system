@@ -2,75 +2,46 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Applicant Details</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
-  <body>
-    <nav>
-  <div class="nav-content">
 
-    <!-- Centered title -->
-    <div class="nav-center">
-      <h1>Job Portal System</h1>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Applicant Details</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
-    <!-- Right side: tagline + welcome + logout -->
-    <div class="right-side">
-      <!-- <p>Find jobs or hire candidates easily</p> -->
+<body>
+  <div class="container">
+    <h2>Applicant Details</h2>
 
-      <div class="user-info">
-        <!-- <span>Welcome <strong>{{ user.name }}</strong></span> <br> <br> -->
-        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-      </div>
-    </div>
+    <div class="card">
+      <p><strong>Name:</strong> {{ application.job_seeker.name }}</p>
+      <p><strong>Email:</strong> {{ application.job_seeker.email }}</p>
+      <p><strong>Applied for:</strong> {{ application.job.job_title }}</p>
+      <p><strong>Applied on:</strong> {{ application.applied_at }}</p>
 
-  </div>
-</nav>
+      <p><strong>College:</strong> {{ application.college }}</p>
+      <p><strong>Branch:</strong> {{ application.branch }}</p>
+      <p><strong>Result:</strong> {{ application.result }}</p>
 
-    <div class="container">
-      <h2>Applicant Details</h2>
+      <p><strong>Experience:</strong><br>
+        {{ application.experience }}
+      </p>
 
-      <div id="applicantInfo">
-        <!-- Filled by JS if you want to make it dynamic -->
-        <p><strong>Name:</strong> <span id="appName"></span></p>
-        <p><strong>Email:</strong> <span id="appEmail"></span></p>
-        <p><strong>Applied for:</strong> <span id="appJob"></span></p>
-        <p><strong>Applied on:</strong> <span id="appDate"></span></p>
-      </div>
+      <p><strong>Reason to Join:</strong><br>
+        {{ application.reason_to_join }}
+      </p>
 
-      <button onclick="alert('Resume download simulation')">
+      <a href="{{ application.resume.url }}" class="btn">
         Download Resume
-      </button>
-
-      <br /><br />
-      <a href="{% url 'applicants-list' %}" class="btn">Back to Applicants</a>
+      </a>
     </div>
 
-    <script src="script.js"></script>
-    <script>
-      // Very basic simulation — in real project you'd pass ?id= via URL
-      // For demo we'll show last applicant or placeholder
-      const apps = getApplications();
-      if (apps.length > 0) {
-        const last = apps[apps.length - 1];
-        const jobs = getJobs();
-        const job = jobs.find((j) => j.id === last.jobId);
+    <br><br>
+    <a href="{% url 'view_applicants' %}" class="btn">
+      ← Back to Applicants
+    </a>
+  </div>
+</body>
 
-        document.getElementById("appName").textContent = last.name;
-        document.getElementById("appEmail").textContent = last.applicantEmail;
-        document.getElementById("appJob").textContent = job
-          ? job.title
-          : "Unknown Job";
-        document.getElementById("appDate").textContent = new Date(
-          last.appliedAt,
-        ).toLocaleString();
-      } else {
-        document.getElementById("applicantInfo").innerHTML =
-          "<p>No applicant data available.</p>";
-      }
-    </script>
-  </body>
 </html>

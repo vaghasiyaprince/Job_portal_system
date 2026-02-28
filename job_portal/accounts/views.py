@@ -65,7 +65,12 @@ def login_view(request):
 
                 request.session["user_type"] = "job_seeker"
                 request.session["user_email"] = email
-                return redirect("dashboard")
+                # return redirect("dashboard")
+                next_url = request.session.get("next_url")
+                if next_url:
+                    del request.session["next_url"]
+                    return redirect(next_url)
+                return redirect("jobseeker_dashboard")
 
             # check recruiter
             recruiter = Recruiter.objects.filter(email=email).first()
@@ -78,7 +83,12 @@ def login_view(request):
 
                 request.session["user_type"] = "recruiter"
                 request.session["user_email"] = email
-                return redirect("dashboard")
+                # return redirect("dashboard")
+                next_url = request.session.get("next_url")
+                if next_url:
+                    del request.session["next_url"]
+                    return redirect(next_url)
+                return redirect("recruiter_dashboard")
 
             form.add_error(None, "Invalid email or password")
 
@@ -95,28 +105,15 @@ def logout_view(request):
 
 
 # ================= DASHBOARD =================
-def dashboard(request):
-    user_type = request.session.get("user_type")
-    user_email = request.session.get("user_email")
+def jobseeker_dashboard(request):
+    if request.session.get('user_type') != 'job_seeker':
+        return redirect('login')
 
-    if not user_type or not user_email:
-        return redirect("login")
+    return redirect('job_list')   # job seeker dashboard = job list
 
-    if user_type == "job_seeker":
-        user = JobSeeker.objects.filter(email=user_email).first()
-        if not user:
-            return redirect("login")
-        job = Job.objects.all().order_by("-created_at")
-        return render(request, "jobseeker-dashboard.html", {"user": user, "jobs": job})
 
-    elif user_type == "recruiter":
-        user = Recruiter.objects.filter(email=user_email).first()
-        if not user:
-            return redirect("login")
-        return render(request, "recruiter-dashboard.html", {"user": user})
-
-    return redirect("login")
-
+def recruiter_dashboard(request):
+    return render(request, 'recruiter-dashboard.html')
 
 # ================= HOME =================
 def home(request):

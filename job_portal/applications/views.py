@@ -79,3 +79,16 @@ def submit_application(request, job_id):
         'job': job,
         'job_id': job_id,
     })
+
+def applicant_detail(request, app_id):
+    if request.session.get('user_type') != 'recruiter':
+        return redirect('login')
+
+    application = Application.objects.filter(id=app_id).first()
+
+    if not application:
+        return redirect('view_applicants')
+
+    return render(request, 'applicant-details.html', {
+        'application': application
+    })

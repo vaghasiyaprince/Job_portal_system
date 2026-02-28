@@ -3,64 +3,58 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ job.job_title }} | Job Portal</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
 
-  <nav>
-    <div class="nav-content">
-      <!-- Centered title -->
-      <div class="nav-center">
-        <h1>Job Portal System</h1>
+<nav>
+  <div class="nav-content">
+    <div class="nav-center">
+      <h1>Job Portal System</h1>
+    </div>
+
+    <div class="right-side">
+      <div class="user-info">
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
       </div>
-
-      <!-- Right side: welcome + logout (uncomment when user is logged in) -->
-      <div class="right-side">
-        <div class="user-info">
-          <!-- <span>Welcome, <strong>{{ user.name|default:"Guest" }}</strong></span> -->
-          <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <div class="container job-details-page">
-    <h2>Job Details</h2>
-
-  <form method="POST">
-    {% csrf_token %}
-
-    <label>Job Title <span class="required">*</span></label>
-    <input type="text" name="job_title" required>
-
-    <label>Company Name <span class="required">*</span></label>
-    <input type="text" name="company_name" required>
-
-    <label>Skills Required (comma separated) <span class="required">*</span></label>
-    <input
-      type="text"
-      name="skills_required"
-      required
-      placeholder="React, Node.js, AWS"
-    >
-
-    <label>Job Description <span class="required">*</span></label>
-    <textarea name="job_description" required rows="6"></textarea> <br> <br>
-
-    <!-- <button type="submit">Post Job</button> -->
-    <div class="action-buttons">
-      <a href="{% url 'apply_job' job.id %}" class="btn apply-btn">Apply Now</a>
-    </div>
-    </div>
-  </form> <br> <br> 
-
-    <div class="back-section">
-      <a href="{% url 'dashboard' %}" class="btn back-btn">← Back to Jobs</a>
     </div>
   </div>
+</nav>
+
+<div class="container job-details-page">
+
+  <h2>{{ job.job_title }}</h2>
+
+  <div class="job-card">
+    <p><strong>Company:</strong> {{ job.company_name }}</p>
+
+    <p><strong>Skills Required:</strong></p>
+    <p>{{ job.skills_required }}</p>
+
+    <p><strong>Job Description:</strong></p>
+    <p>{{ job.job_description }}</p>
+
+    <p><strong>Posted On:</strong> {{ job.created_at|date:"F d, Y" }}</p>
+  </div>
+
+  <div class="action-buttons">
+    {% if request.session.user_type == "job_seeker" %}
+      <a href="{% url 'apply_job' job.id %}" class="btn apply-btn">
+        Apply Now
+      </a>
+    {% endif %}
+  </div><br><br>
+
+  <div class="back-section">
+    <a href="{% url 'jobseeker_dashboard' %}" class="btn back-btn">
+      ← Back to Dashboard
+    </a>
+  </div>
+
+</div>
 
 </body>
 </html>

@@ -7,7 +7,7 @@ from accounts.models import Recruiter
 
 def post_job(request):
     if request.session.get('user_type') != 'recruiter':
-        return redirect('login ')
+        return redirect('login')
 
     if request.method == 'POST':
         recruiter = Recruiter.objects.filter(
@@ -37,7 +37,7 @@ def post_job(request):
             company_name=company_name
         )
 
-        return redirect('dashboard')
+        return redirect('job_post_success')
 
     return render(request, 'post-job.html')
 
@@ -47,10 +47,17 @@ def job_list(request):
 
 
 def job_detail(request, job_id):
-    try:
-        job = Job.objects.get(id=job_id)
-    except Job.DoesNotExist:
-        return HttpResponse("Job not found")
+    if not request.session.get('user_type'):
+        request.session['next_url'] = f'/jobs/{job_id}/'
+        return redirect('login')
+
+    job = Job.objects.filter(id=job_id).first()
+
+    if not job:
+        return redirect('job_list')
 
     return render(request, 'job-details.html', {'job': job})
+
+def job_post_success(request):
+    return render(request, 'post-job-success.html')
 
