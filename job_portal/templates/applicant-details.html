@@ -2,46 +2,44 @@
 
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Applicant Details</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Applicant Details</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-</head>
+  <body>
+    <div class="container">
+      <h2>Applicant Details</h2>
 
-<body>
-  <div class="container">
-    <h2>Applicant Details</h2>
+      <div class="card">
+        <p><strong>Name:</strong> {{ application.job_seeker.name }}</p>
+        <p><strong>Email:</strong> {{ application.job_seeker.email }}</p>
+        <p><strong>Applied for:</strong> {{ application.job.job_title }}</p>
+        <p><strong>Applied on:</strong> {{ application.applied_at }}</p>
 
-    <div class="card">
-      <p><strong>Name:</strong> {{ application.job_seeker.name }}</p>
-      <p><strong>Email:</strong> {{ application.job_seeker.email }}</p>
-      <p><strong>Applied for:</strong> {{ application.job.job_title }}</p>
-      <p><strong>Applied on:</strong> {{ application.applied_at }}</p>
+        <p><strong>College:</strong> {{ application.college }}</p>
+        <p><strong>Branch:</strong> {{ application.branch }}</p>
+        <p><strong>Result:</strong> {{ application.result }}</p>
 
-      <p><strong>College:</strong> {{ application.college }}</p>
-      <p><strong>Branch:</strong> {{ application.branch }}</p>
-      <p><strong>Result:</strong> {{ application.result }}</p>
+        <p>
+          <strong>Experience:</strong><br />
+          {{ application.experience }}
+        </p>
 
-      <p><strong>Experience:</strong><br>
-        {{ application.experience }}
-      </p>
+        <p>
+          <strong>Reason to Join:</strong><br />
+          {{ application.reason_to_join }}
+        </p>
 
-      <p><strong>Reason to Join:</strong><br>
-        {{ application.reason_to_join }}
-      </p>
+        <a href="{{ application.resume.url }}" class="btn"> Download Resume </a>
+      </div>
 
-      <a href="{{ application.resume.url }}" class="btn">
-        Download Resume
+      <br /><br />
+      <a href="{% url 'view_applicants' %}" class="btn">
+        ← Back to Applicants
       </a>
     </div>
-
-    <br><br>
-    <a href="{% url 'view_applicants' %}" class="btn">
-      ← Back to Applicants
-    </a>
-  </div>
-</body>
-
+  </body>
 </html>

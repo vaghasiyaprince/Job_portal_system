@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from .forms import LoginForm
 from .models import JobSeeker, Recruiter
 from django.contrib.auth.hashers import make_password, check_password
@@ -44,8 +45,11 @@ def register(request):
     return render(request, "register.html")
 
 # ================= LOGIN =================
+
 def login_view(request):
-    selected_role = request.GET.get("role") or request.POST.get("role")
+
+    required_role = request.session.get("required_role")
+    next_url = request.session.get("next_url")
 
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -54,54 +58,67 @@ def login_view(request):
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
 
-            # check job seeker
+            # 🔵 Job Seeker Login
+        if required_role == "job_seeker":
             user = JobSeeker.objects.filter(email=email).first()
             if user and check_password(password, user.password):
-                if selected_role == "recruiter":
-                    return render(request, "login.html", {
-                        "form": form,
-                        "error": "You are not a recruiter"
-                    })
-
+                # if required_role == "recruiter":
+                #     return render(request, "login.html", {
+                #         "form": form,
+                #         "error": "You are not a Recruiter"
+                #     })
                 request.session["user_type"] = "job_seeker"
                 request.session["user_email"] = email
-                # return redirect("dashboard")
-                next_url = request.session.get("next_url")
-                if next_url:
-                    del request.session["next_url"]
-                    return redirect(next_url)
-                return redirect("jobseeker_dashboard")
 
-            # check recruiter
+                request.session.pop("required_role", None)
+
+                if next_url:
+                    request.session.pop("next_url", None)
+                    return redirect(next_url)
+
+                return redirect("job_list")
+            else:
+                return render(request, "login.html", {
+                    "form": form,
+                    "error": "Invalid email or password"
+                })
+
+            # 🔵 Recruiter Login
+        else:
             recruiter = Recruiter.objects.filter(email=email).first()
             if recruiter and check_password(password, recruiter.password):
-                if selected_role == "job_seeker":
-                    return render(request, "login.html", {
-                        "form": form,
-                        "error": "You are not a job seeker"
-                    })
+
+                # if required_role == "job_seeker":
+                #     return render(request, "login.html", {
+                #         "form": form,
+                #         "error": "You are not a Job Seeker"
+                #     })
 
                 request.session["user_type"] = "recruiter"
                 request.session["user_email"] = email
-                # return redirect("dashboard")
-                next_url = request.session.get("next_url")
+
+                request.session.pop("required_role", None)
+
                 if next_url:
-                    del request.session["next_url"]
+                    request.session.pop("next_url", None)
                     return redirect(next_url)
+
                 return redirect("recruiter_dashboard")
 
-            form.add_error(None, "Invalid email or password")
+            return render(request, "login.html", {
+                "form": form,
+                "error": "Invalid email or password"
+            })
 
     else:
         form = LoginForm()
 
     return render(request, "login.html", {"form": form})
 
-
 # ================= LOGOUT =================
 def logout_view(request):
     request.session.flush()
-    return redirect("login")
+    return redirect("home")
 
 
 # ================= DASHBOARD =================
@@ -109,11 +126,28 @@ def jobseeker_dashboard(request):
     if request.session.get('user_type') != 'job_seeker':
         return redirect('login')
 
-    return redirect('job_list')   # job seeker dashboard = job list
+    jobs = Job.objects.all()
+    return render(request, 'job-list.html', {'jobs': jobs})
 
 
 def recruiter_dashboard(request):
-    return render(request, 'recruiter-dashboard.html')
+
+    # Preview mode (from home)
+    request.session["required_role"] = "recruiter"
+    request.session["next_url"] = request.path
+    if request.GET.get("preview"):
+        return render(request, "recruiter-dashboard.html")
+
+    # Not logged in
+    # if not request.session.get("user_type"):
+        
+        # return redirect("login")
+
+    # Wrong role
+    if request.session.get("user_type") != "recruiter":
+        return HttpResponse("You are not a Recruiter")
+
+    return render(request, "recruiter-dashboard.html")
 
 # ================= HOME =================
 def home(request):

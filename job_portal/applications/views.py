@@ -9,8 +9,14 @@ from django.contrib.auth.decorators import login_required
  
 
 def apply_job(request, job_id):
-    if request.session.get('user_type') != 'job_seeker':
-        return redirect('dashboard')
+
+    if not request.session.get("user_type"):
+        request.session["required_role"] = "job_seeker"
+        request.session["next_url"] = request.path
+        return redirect("login")
+
+    if request.session.get("user_type") != "job_seeker":
+        return HttpResponse("You are not a Job Seeker")
 
     try:
         job = Job.objects.get(id=job_id)
@@ -47,41 +53,54 @@ def apply_job(request, job_id):
 
 
 def view_applicants(request):
-    if 'user_type' not in request.session or request.session['user_type'] != 'recruiter':
-        return redirect('login')
+    if not request.session.get("user_type"):
+        request.session["required_role"] = "recruiter"
+        request.session["next_url"] = request.path
+        return redirect("login")
+
+    if request.session.get("user_type") != "recruiter":
+        return HttpResponse("You are not a Recruiter")
     
-    recruiter = Recruiter.objects.filter(email=request.session['user_email']).first()
-    applications = Application.objects.filter(job__recruiter=recruiter)
+    recruiter = Recruiter.objects.filter(
+        email=request.session['user_email']
+    ).first()
 
-    return render(request, 'applicants-list.html', {'applications': applications})
+    applications = Application.objects.filter(
+        job__recruiter=recruiter
+    )
 
-
-@login_required
-def submit_application(request, job_id):
-    job = get_object_or_404(Job, id=job_id)
-
-    if request.method == 'POST':
-        form = ApplicationForm(request.POST, request.FILES)
-        if form.is_valid():
-            application = form.save(commit=False)
-            application.job = job
-            application.applicant = request.user
-            application.save()
-            # Optional: success message
-            # messages.success(request, "Application submitted successfully!")
-            return redirect('job_list')   # or wherever you want to go after apply
-
-    else:
-        form = ApplicationForm()
-
-    return render(request, 'application-form.html', {
-        'form': form,
-        'job': job,
-        'job_id': job_id,
+    return render(request, 'applicants-list.html', {
+        'applications': applications
     })
+
+# @login_required
+# def submit_application(request, job_id):
+#     job = get_object_or_404(Job, id=job_id)
+
+#     if request.method == 'POST':
+#         form = ApplicationForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             application = form.save(commit=False)
+#             application.job = job
+#             application.applicant = request.user
+#             application.save()
+#             # Optional: success message
+#             # messages.success(request, "Application submitted successfully!")
+#             return redirect('job_list')   # or wherever you want to go after apply
+
+#     else:
+#         form = ApplicationForm()
+
+#     return render(request, 'application-form.html', {
+#         'form': form,
+#         'job': job,
+#         'job_id': job_id,
+#     })
 
 def applicant_detail(request, app_id):
     if request.session.get('user_type') != 'recruiter':
+        request.session["required_role"] = "recruiter"
+        request.session["next_url"] = request.path
         return redirect('login')
 
     application = Application.objects.filter(id=app_id).first()

@@ -6,8 +6,13 @@ from accounts.models import Recruiter
 
 
 def post_job(request):
-    if request.session.get('user_type') != 'recruiter':
-        return redirect('login')
+    if not request.session.get("user_type"):
+        request.session["required_role"] = "recruiter"
+        request.session["next_url"] = request.path
+        return redirect("login")
+
+    if request.session.get("user_type") != "recruiter":
+        return HttpResponse("You are not a Recruiter")
 
     if request.method == 'POST':
         recruiter = Recruiter.objects.filter(
@@ -42,19 +47,29 @@ def post_job(request):
     return render(request, 'post-job.html')
 
 def job_list(request):
+    
+    request.session["required_role"] = "job_seeker"
+    request.session["next_url"] = request.path
+
     jobs = Job.objects.all()
     return render(request, 'job-list.html', {'jobs': jobs})
 
 
 def job_detail(request, job_id):
-    if not request.session.get('user_type'):
-        request.session['next_url'] = f'/jobs/{job_id}/'
-        return redirect('login')
 
     job = Job.objects.filter(id=job_id).first()
-
     if not job:
         return redirect('job_list')
+
+    # If not logged in
+    if not request.session.get("user_type"):
+        request.session["required_role"] = "job_seeker"
+        request.session["next_url"] = request.path
+        return redirect("login")
+
+    # If logged in but wrong role
+    if request.session.get("user_type") != "job_seeker":
+        return redirect("login")
 
     return render(request, 'job-details.html', {'job': job})
 

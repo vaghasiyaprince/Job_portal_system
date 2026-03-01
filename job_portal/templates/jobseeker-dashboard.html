@@ -2,78 +2,66 @@
 
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Job Seeker Dashboard</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Job Seeker Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
 
-<body> 
-  
-<nav>
-  <div class="nav-content">
+  <body>
+    <nav>
+      <div class="nav-content">
+        <!-- Centered title -->
+        <div class="nav-center">
+          <h1>Job Portal System</h1>
+        </div>
 
-    <!-- Centered title -->
-    <div class="nav-center">
-      <h1>Job Portal System</h1>
-    </div>
+        <!-- Right side: tagline + welcome + logout -->
+        <div class="right-side">
+          <!-- <p>You can find your dream job</p> -->
 
-    <!-- Right side: tagline + welcome + logout -->
-    <div class="right-side">
-      <!-- <p>You can find your dream job</p> -->
-
-      <div class="user-info">
-        <span>Welcome, <strong>{{ user.name }}</strong></span> <br>
-        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+          <div class="user-info">
+            {% if request.session.user_email and request.session.user_type ==
+            "job_seeker" %}
+            <span>Welcome, <strong>{{ user.name }}</strong></span> <br />
+            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="logout-btn">Login</a>
+          </div>
+        </div>
       </div>
-    </div>
+    </nav>
 
-  </div>
-</nav>
+    <div class="container">
+      <h2>Find Your Dream Job</h2>
 
- 
+      <!-- Search box (optional) -->
+      <input type="text" placeholder="Search jobs..." />
 
-<div class="container">
-  <h2>Find Your Dream Job</h2>
+      <br /><br />
 
-  <!-- Search box (optional) -->
-  <input
-    type="text"
-    placeholder="Search jobs..."
-  />
+      <!-- JOB LIST START -->
+      <div id="jobListContainer">
+        {% for job in jobs %}
+        <div class="job-card">
+          <h3>{{ job.job_title }}</h3>
 
-  <br><br>
+          <p><strong>Company:</strong> {{ job.company_name }}</p>
 
-  <!-- JOB LIST START -->
-  <div id="jobListContainer">
+          <p><strong>Skills Required:</strong> {{ job.skills_required }}</p>
 
-    {% for job in jobs %}
-      <div class="job-card">
+          <p>{{ job.job_description|truncatewords:20 }}</p>
 
-        <h3>{{ job.job_title }}</h3>
-
-        <p><strong>Company:</strong> {{ job.company_name }}</p>
-
-        <p><strong>Skills Required:</strong> {{ job.skills_required }}</p>
-
-        <p>{{ job.job_description|truncatewords:20 }}</p>
-
-        <a href="{% url 'job_detail' job.id %}" class="btn">
-          View Details
-        </a>
-
-      </div>
-    {% empty %}
+          <a href="{% url 'job_detail' job.id %}" class="btn"> View Details </a>
+        </div>
+        {% empty %}
         <p>No jobs available right now.</p>
-    {% endfor %}
+        {% endfor %}
+      </div>
+      <!-- JOB LIST END -->
 
-  </div>
-  <!-- JOB LIST END -->
-
-  <br><br>
-  <a href="{% url 'home' %}" class="btn">Back to Home</a>
-
-</div>
-
-</body>
+      <br /><br />
+      <a href="{% url 'home' %}" class="btn">Back to Home</a>
+    </div>
+  </body>
 </html>
