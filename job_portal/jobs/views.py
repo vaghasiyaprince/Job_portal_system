@@ -12,7 +12,7 @@ def post_job(request):
         return redirect("login")
 
     if request.session.get("user_type") != "recruiter":
-        return HttpResponse("You are not a Recruiter")
+        return redirect("login")
 
     if request.method == 'POST':
         recruiter = Recruiter.objects.filter(
@@ -46,13 +46,28 @@ def post_job(request):
 
     return render(request, 'post-job.html')
 
+from django.db.models import Q
+
 def job_list(request):
     
     request.session["required_role"] = "job_seeker"
     request.session["next_url"] = request.path
 
     jobs = Job.objects.all()
-    return render(request, 'job-list.html', {'jobs': jobs})
+
+    query = request.GET.get('q')   # 🔥 NEW LINE
+
+    if query:   # 🔥 NEW BLOCK
+        jobs = jobs.filter(
+            Q(job_title__icontains=query) |
+            Q(company_name__icontains=query) |
+            Q(skills_required__icontains=query)
+        )
+
+    return render(request, 'job-list.html', {
+        'jobs': jobs,
+        'query': query   # 🔥 optional (for showing search value)
+    })
 
 
 def job_detail(request, job_id):

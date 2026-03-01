@@ -44,7 +44,7 @@ def apply_job(request, job_id):
                 reason_to_join=form.cleaned_data['reason_to_join']
             )
 
-            return redirect('dashboard')
+            return redirect('application-success.html')
 
     else:
         form = ApplicationForm()

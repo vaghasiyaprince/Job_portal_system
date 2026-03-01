@@ -145,7 +145,7 @@ def recruiter_dashboard(request):
 
     # Wrong role
     if request.session.get("user_type") != "recruiter":
-        return HttpResponse("You are not a Recruiter")
+        return redirect("job_list")
 
     return render(request, "recruiter-dashboard.html")
 

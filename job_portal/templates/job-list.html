@@ -2,62 +2,64 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Available Jobs</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
 
-  <body>
-    <nav>
-      <div class="nav-content">
-        <!-- Centered title -->
-        <div class="nav-center">
-          <h1>Job Portal System</h1>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Available Jobs</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
-        <!-- Right side: tagline + welcome + logout -->
-        <div class="right-side">
-          <!-- <p>Find jobs or hire candidates easily</p> -->
+<body>
+  <nav>
+    <div class="nav-content">
+      <!-- Centered title -->
+      <div class="nav-center">
+        <h1>Job Portal System</h1>
+      </div>
 
-          <div class="user-info">
-            {% if request.session.user_type == "job_seeker" %}
-            <span>Welcome {{ request.session.user_name }}</span>
-            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-            {% else %}
-            <a href="{% url 'login' %}" class="logout-btn">Login</a>
-            {% endif %}
-          </div>
+      <!-- Right side: tagline + welcome + logout -->
+      <div class="right-side">
+        <!-- <p>Find jobs or hire candidates easily</p> -->
+
+        <div class="user-info">
+          {% if request.session.user_type == "job_seeker" %}
+          <span>Welcome {{ request.session.user_name }}</span>
+          <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+          {% else %}
+          <a href="{% url 'login' %}" class="logout-btn">Login</a>
+          {% endif %}
         </div>
       </div>
-    </nav>
-
-    <div class="container">
-      <h2>Available Jobs</h2>
-
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search jobs by company, title or category..."
-        style="width: 100%; padding: 12px; margin-bottom: 20px"
-      />
-
-      <div style="display: grid; gap: 20px">
-        {% for job in jobs %}
-        <div class="card">
-          <h3>{{ job.job_title }}</h3>
-          <p><strong>Company:</strong> {{ job.company_name }}</p>
-          <p><strong>Skills:</strong> {{ job.skills_required }}</p>
-
-          <a href="{% url 'job_detail' job.id %}" class="btn">View Details</a>
-        </div>
-        {% empty %}
-        <p>No jobs available right now.</p>
-        {% endfor %}
-      </div>
-      <br />
-      <a href="{% url 'home' %}" class="btn">Back to Home</a>
     </div>
-  </body>
+  </nav>
+
+  <div class="container">
+    <h2>Available Jobs</h2>
+
+    <form method="GET">
+      <input type="text" name="q" placeholder="Search jobs by company, title or category..."
+        value="{{ request.GET.q }}" />
+    </form>
+
+    <div class="job-grid">
+      {% for job in jobs %}
+      <div class="job-card">
+        <h3>{{ job.job_title }}</h3>
+        <p><strong>Company:</strong> {{ job.company_name }}</p>
+        <p><strong>Skills:</strong> {{ job.skills_required }}</p>
+
+        <a href="{% url 'job_detail' job.id %}" class="view-btn">
+          View Details
+        </a>
+      </div>
+      {% empty %}
+      <p>No jobs available right now.</p>
+      {% endfor %}
+    </div>
+    <br />
+    <a href="{% url 'home' %}" class="btn">Back to Home</a>
+  </div>
+</body>
+
 </html>
