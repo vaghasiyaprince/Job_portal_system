@@ -2,51 +2,55 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Recruiter Dashboard</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
-  <body>
-    <nav>
-      <div class="nav-content">
-        <!-- Centered title -->
-        <div class="nav-center">
-          <h1>Job Portal System</h1>
-        </div>
 
-        <!-- Right side: tagline + welcome + logout -->
-        <div class="right-side">
-          <!-- <p>Find jobs or hire candidates easily</p> -->
+<head>
+  <meta charset="UTF-8" />
+  <title>Recruiter Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
-          <div class="user-info">
-            {% if request.session.user_email and request.session.user_type == "recruiter" %}
-            <span>Welcome, <strong>{{ request.session.user_email }}</strong></span>
-            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-            {% else %}
-            <a href="{% url 'login' %}" class="logout-btn">Login</a>
-            {% endif %}
-          </div>
+<body>
+  <nav>
+    <div class="nav-content">
+      <div class="nav-center">
+        <h1>Job Portal System</h1>
+      </div>
+      <div class="right-side">
+        <div class="user-info">
+         
+          {% if request.session.user_email and request.session.user_type == "recruiter" %}
+          <span><i class="fas fa-user-circle"></i> Welcome, {{ request.session.user_email }}</span>
+          <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          {% else %}
+          <a href="{% url 'login' %}" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+          {% endif %}
         </div>
       </div>
-    </nav>
-
-    <div class="container">
-      <ul class="dashboard-menu">
-        <li><a href="{% url 'post_job' %}" class="big-btn">Post New Job</a></li>
-        <br />
-        <br />
-        <li>
-          <a href="{% url 'view_applicants' %}" class="big-btn"
-            >View Applicants</a
-          >
-        </li>
-      </ul>
-
-      <br />
-      <a href="{% url 'home' %}" class="btn">Back to Home</a>
     </div>
+  </nav>
 
-    <script src="script.js"></script>
-  </body>
+  <div class="container">
+    <h2><i class="fas fa-tachometer-alt"></i> Recruiter Dashboard</h2>
+
+    <ul class="dashboard-menu">
+      <li>
+        <a href="{% url 'post_job' %}" class="big-btn recruiter">
+          <i class="fas fa-plus-circle"></i> Post New Job
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'view_applicants' %}" class="big-btn recruiter">
+          <i class="fas fa-users"></i> View Applicants
+        </a>
+      </li>
+    </ul>
+
+    <br />
+    <a href="{% url 'home' %}" class="btn-back">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+  </div>
+</body>
+
 </html>

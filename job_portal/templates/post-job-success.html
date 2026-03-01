@@ -2,51 +2,60 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Job Posted Successfully</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
-  <body>
-    <nav>
-  <div class="nav-content">
 
-    <!-- Centered title -->
-    <div class="nav-center">
-      <h1>Job Portal System</h1>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Posted Successfully</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
-    <!-- Right side: tagline + welcome + logout -->
-    <div class="right-side">
-      <!-- <p>Find jobs or hire candidates easily</p> -->
-
-      <div class="user-info">
-        <!-- <span>Welcome <strong>{{ user.name }}</strong></span> <br> <br> -->
-        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+<body>
+  <!-- <nav>
+      <div class="nav-content">
+        <div class="nav-center">
+          <h1>Job Portal System</h1>
+        </div>
+        <div class="right-side">
+          <div class="user-info">
+            <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav> -->
+  <nav>
+    <div class="nav-content">
+      <div class="nav-center">
+        <h1>Job Portal System</h1>
+      </div>
+      <div class="right-side">
+        <div class="user-info">
+          {% if request.session.user_type %}
+          <span><i class="fas fa-user-circle"></i> Welcome, {{ request.session.user_name }}</span>
+          {% endif %}
+          <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
       </div>
     </div>
+  </nav>
 
+  <div class="container success">
+    <i class="fas fa-check-circle fa-5x" style="color: #10b981; margin-bottom: 1rem;"></i>
+    <h2>Job Posted Successfully</h2>
+
+    <p>Your job listing has been posted and is now visible to job seekers.</p>
+
+    <div class="action-buttons"
+      style="margin: 2rem 0; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="{% url 'post_job' %}" class="btn" style="background: linear-gradient(135deg, #10b981, #059669);">
+        <i class="fas fa-plus"></i> Post Another Job
+      </a>
+      <a href="{% url 'recruiter_dashboard' %}" class="btn-back">
+        <i class="fas fa-tachometer-alt"></i> Back to Dashboard
+      </a>
+    </div>
   </div>
-</nav>
+</body>
 
-    <div class="container success">
-      <h2>Job Posted Successfully ✅</h2>
-
-      <p>Your job listing has been posted and is now visible to job seekers.</p>
-
-      <div style="margin: 2rem 0; text-align: center">
-        <a
-          href="{% url 'job_post_success' %}"
-          class="btn"
-          style="margin-right: 1rem; background: #27ae60"
-        >
-          Post Another Job
-        </a>
-        <a href="{% url 'recruiter_dashboard' %}" class="btn"> Back to Dashboard </a>
-      </div>
-    </div>
-
-    <script src="script.js"></script>
-  </body>
 </html>

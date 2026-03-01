@@ -6,55 +6,61 @@
 <head>
   <meta charset="UTF-8" />
   <title>Apply for Job</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 
 <body>
-  <nav>
+  <!-- <nav>
     <div class="nav-content">
-
-      <!-- Centered title -->
       <div class="nav-center">
         <h1>Job Portal System</h1>
       </div>
-
-      <!-- Right side: tagline + welcome + logout -->
       <div class="right-side">
-        <!-- <p>Find jobs or hire candidates easily</p> -->
-
         <div class="user-info">
-          <!-- <span>Welcome <strong>{{ user.name }}</strong></span> <br> <br> -->
-          <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+          <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
       </div>
-
+    </div>
+  </nav> -->
+  <nav>
+    <div class="nav-content">
+      <div class="nav-center">
+        <h1>Job Portal System</h1>
+      </div>
+      <div class="right-side">
+        <div class="user-info">
+          {% if request.session.user_type %}
+          <span><i class="fas fa-user-circle"></i> Welcome, {{ request.session.user_name }}</span>
+          {% endif %}
+          <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
     </div>
   </nav>
 
   <div class="container">
-    <h2>Application Form</h2>
+    <h2><i class="fas fa-file-alt"></i> Application Form</h2>
 
-   
     <form action="{% url 'apply_job' job.id %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
 
       {{ form.as_p }}
 
-      <p>You are applying as: <b>{{ request.session.user_email }}</b></p>
+      <div class="info-box">
+        <p><i class="fas fa-info-circle"></i> You are applying as: <strong>{{ request.session.user_email }}</strong></p>
+      </div>
 
-
-      <button type="submit">Submit Application</button>
+      <button type="submit">
+        <i class="fas fa-paper-plane"></i> Submit Application
+      </button>
     </form>
 
     <br />
-    <a href="{% url 'job_detail' job.id %}" class="btn">Back</a>
+    <a href="{% url 'job_detail' job.id %}" class="btn-back">
+      <i class="fas fa-arrow-left"></i> Back
+    </a>
   </div>
-
-  <script src="script.js"></script>
-  <script>
-    document.getElementById("applicantName").textContent =
-      getCurrentUser()?.name || "Guest";
-  </script>
 </body>
 
 </html>

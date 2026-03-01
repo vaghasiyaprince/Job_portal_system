@@ -40,7 +40,7 @@ def register(request):
                 company_name=company
             )
 
-        return redirect("login")
+        return redirect("home")
 
     return render(request, "register.html")
 

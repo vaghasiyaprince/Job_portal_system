@@ -2,52 +2,60 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Applicants List - Recruiter</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
 
-  <body>
-    <nav>
-      <div class="nav-content">
-        <div class="nav-center">
-          <h1>Job Portal System</h1>
-        </div>
-        <div class="right-side">
-          <div class="user-info">
-            {% if request.session.user_type %}
-            <span>Welcome {{ request.session.user_name }}</span>
-            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-            {% else %}
-            <a href="{% url 'login' %}" class="logout-btn">Login</a>
-            {% endif %}
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <title>Applicants List - Recruiter</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+
+<body>
+  <nav>
+    <div class="nav-content">
+      <div class="nav-center">
+        <h1>Job Portal System</h1>
+      </div>
+      <div class="right-side">
+        <div class="user-info">
+          {% if request.session.user_type %}
+          <span><i class="fas fa-user-circle"></i> {{ request.session.user_name }}</span>
+          <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          {% else %}
+          <a href="{% url 'login' %}" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+          {% endif %}
         </div>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <div class="container">
-      <h2>Applications Received</h2>
+  <div class="container">
+    <h2><i class="fas fa-users"></i> Applications Received</h2>
 
+    <div class="applicants-list">
       {% for app in applications %}
-      <div class="card">
-        <h3>{{ app.job_seeker.name }}</h3>
-        <p><strong>Applied For:</strong> {{ app.job.job_title }}</p>
+      <div class="applicant-item">
+        <h3><i class="fas fa-user"></i> {{ app.job_seeker.name }}</h3>
+        <p><strong><i class="fas fa-briefcase"></i> Applied For:</strong> {{ app.job.job_title }}</p>
+        <p><strong><i class="fas fa-calendar"></i> Applied on:</strong> {{ app.applied_at|date:"F d, Y" }}</p>
 
         <a href="{% url 'applicant_detail' app.id %}" class="btn">
-          View Details
+          <i class="fas fa-eye"></i> View Details
         </a>
       </div>
-
       {% empty %}
-      <p>No applications received yet.</p>
+      <div class="empty-state">
+        <i class="fas fa-inbox fa-3x"></i>
+        <p>No applications received yet.</p>
+      </div>
       {% endfor %}
-
-      <br /><br />
-      <a href="{% url 'recruiter_dashboard' %}" class="btn"
-        >Back to Dashboard</a
-      >
     </div>
-  </body>
+
+    <br /><br />
+    <a href="{% url 'recruiter_dashboard' %}" class="btn-back">
+      <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+  </div>
+</body>
+
 </html>

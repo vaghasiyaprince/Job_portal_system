@@ -7,42 +7,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Job Portal System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 
 <body>
   <nav>
     <div class="nav-content">
-
-      <!-- Centered title -->
       <div class="nav-center">
         <h1>Job Portal System</h1>
       </div>
-
-      <!-- Right side: tagline + welcome + logout -->
       <div class="right-side">
-        <p>Find jobs or hire candidates easily</p>
-
-        <!-- <div class="user-info">
-        <span>Welcome, <strong>{{ user.name }}</strong></span>
-        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-      </div> -->
+        <p><i class="fas fa-briefcase"></i> Find jobs or hire candidates easily</p>
       </div>
-
     </div>
   </nav>
 
   <div class="landing-container">
     <h2>Welcome to Job Portal</h2>
-    <p>Please select your role to continue</p>
+    <p>Your gateway to the perfect career opportunity</p>
 
     <div class="role-buttons">
-      <a href="{% url 'job_list' %}" class="big-btn jobseeker">Job Seeker</a>
-      <a href="{% url 'recruiter_dashboard' %}?preview=true" class="big-btn recruiter">Recruiter</a>
+      <a href="{% url 'job_list' %}" class="big-btn jobseeker">
+        <i class="fas fa-user-tie"></i> Job Seeker
+      </a>
+      <a href="{% url 'recruiter_dashboard' %}?preview=true" class="big-btn recruiter">
+        <i class="fas fa-building"></i> Recruiter
+      </a>
     </div>
 
     <p class="small-link">
-      Don't have an account? <a href="{% url 'register' %}">Register here</a>
+      Don't have an account? <a href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Register here</a>
     </p>
   </div>
 </body>

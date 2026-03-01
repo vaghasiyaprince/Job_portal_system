@@ -2,6 +2,7 @@
 
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,150 +11,152 @@
   <!-- Add Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
 
-<nav>
-  <div class="nav-content">
-    <div class="nav-center">
-      <h1>Job Portal System</h1>
-    </div>
+  <nav>
+    <div class="nav-content">
+      <div class="nav-center">
+        <h1>Job Portal System</h1>
+      </div>
 
-    <div class="right-side">
-      <div class="user-info">
-        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+      <div class="right-side">
+        <div class="user-info">
+          <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<div class="job-details-page">
+  <div class="job-details-page">
 
-  <!-- Hero Section -->
-  <div class="job-hero">
-    <h1>{{ job.job_title }}</h1>
-    <div class="company-name">{{ job.company_name }}</div>
-    <span class="badge">
-      <i class="fas fa-calendar-alt"></i> Posted {{ job.created_at|date:"F d, Y" }}
-    </span>
-  </div>
+    <!-- Hero Section -->
+    <div class="job-hero">
+      <h1>{{ job.job_title }}</h1>
+      <div class="company-name">{{ job.company_name }}</div>
+      <span class="badge">
+        <i class="fas fa-calendar-alt"></i> Posted {{ job.created_at|date:"F d, Y" }}
+      </span>
+    </div>
 
-  <!-- Main Content Grid -->
-  <div class="job-content-grid">
-    
-    <!-- Left Column - Main Details -->
-    <div class="job-main-details">
-      
-      <div class="section-header">
-        <i class="fas fa-align-left"></i>
-        <h2>Job Description</h2>
-      </div>
-      
-      <div class="job-description">
-        {{ job.job_description|linebreaks }}
-      </div>
+    <!-- Main Content Grid -->
+    <div class="job-content-grid">
 
-      <div class="section-header">
-        <i class="fas fa-cogs"></i>
-        <h2>Skills Required</h2>
-      </div>
+      <!-- Left Column - Main Details -->
+      <div class="job-main-details">
 
-      <div class="skills-container">
-        {% for skill in job.skills_required.split %}
+        <div class="section-header">
+          <i class="fas fa-align-left"></i>
+          <h2>Job Description</h2>
+        </div>
+
+        <div class="job-description">
+          {{ job.job_description|linebreaks }}
+        </div>
+
+        <div class="section-header">
+          <i class="fas fa-cogs"></i>
+          <h2>Skills Required</h2>
+        </div>
+
+        <div class="skills-container">
+          {% for skill in job.skills_required.split %}
           <span class="skill-tag">{{ skill }}</span>
-        {% endfor %}
+          {% endfor %}
+        </div>
+
       </div>
 
-    </div>
+      <!-- Right Column - Sidebar -->
+      <div class="job-sidebar">
 
-    <!-- Right Column - Sidebar -->
-    <div class="job-sidebar">
-      
-      <!-- Company Info Card -->
-      <div class="info-card">
-        <h3><i class="fas fa-building"></i> Company Details</h3>
-        <div class="info-item">
-          <div class="info-icon">
-            <i class="fas fa-building"></i>
+        <!-- Company Info Card -->
+        <div class="info-card">
+          <h3><i class="fas fa-building"></i> Company Details</h3>
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="info-content">
+              <div class="info-label">Company Name</div>
+              <div class="info-value">{{ job.company_name }}</div>
+            </div>
           </div>
-          <div class="info-content">
-            <div class="info-label">Company Name</div>
-            <div class="info-value">{{ job.company_name }}</div>
-          </div>
-        </div>
-        
-        <div class="info-item">
-          <div class="info-icon">
-            <i class="fas fa-map-marker-alt"></i>
-          </div>
-          <div class="info-content">
-            <div class="info-label">Location</div>
-            <div class="info-value">{{ job.location|default:"Not specified" }}</div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Job Details Card -->
-      <div class="info-card">
-        <h3><i class="fas fa-briefcase"></i> Job Details</h3>
-        
-        <div class="info-item">
-          <div class="info-icon">
-            <i class="fas fa-calendar-check"></i>
-          </div>
-          <div class="info-content">
-            <div class="info-label">Posted Date</div>
-            <div class="info-value">{{ job.created_at|date:"M d, Y" }}</div>
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="info-content">
+              <div class="info-label">Location</div>
+              <div class="info-value">{{ job.location|default:"Not specified" }}</div>
+            </div>
           </div>
         </div>
-        
-        <div class="info-item">
-          <div class="info-icon">
-            <i class="fas fa-hourglass-half"></i>
-          </div>
-          <div class="info-content">
-            <div class="info-label">Job Type</div>
-            <div class="info-value">{{ job.job_type|default:"Full Time" }}</div>
-          </div>
-        </div>
-        
-      </div>
 
-      <!-- Action Buttons -->
-      <div class="action-section">
-        {% if request.session.user_type == "job_seeker" %}
+        <!-- Job Details Card -->
+        <div class="info-card">
+          <h3><i class="fas fa-briefcase"></i> Job Details</h3>
+
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="info-content">
+              <div class="info-label">Posted Date</div>
+              <div class="info-value">{{ job.created_at|date:"M d, Y" }}</div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-hourglass-half"></i>
+            </div>
+            <div class="info-content">
+              <div class="info-label">Job Type</div>
+              <div class="info-value">{{ job.job_type|default:"Full Time" }}</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-section">
+          {% if request.session.user_type == "job_seeker" %}
           <a href="{% url 'apply_job' job.id %}" class="btn-apply">
             <i class="fas fa-paper-plane"></i> Apply Now
           </a>
-        {% endif %}
-        
-        <a href="{% url 'jobseeker_dashboard' %}" class="btn-back">
-          <i class="fas fa-arrow-left"></i> Back to Dashboard
-        </a>
+          {% endif %}
+
+          <a href="{% url 'jobseeker_dashboard' %}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+          </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Similar Jobs Section (Optional) -->
-  {% if similar_jobs %}
-  <div class="similar-jobs">
-    <h2>Similar Jobs You Might Like</h2>
-    <div class="similar-jobs-grid">
-      {% for similar in similar_jobs %}
-      <a href="{% url 'job_detail' similar.id %}" class="similar-job-card">
-        <h3>{{ similar.job_title }}</h3>
-        <div class="company">{{ similar.company_name }}</div>
-        <div class="skills">
-          {% for skill in similar.skills_required.split|slice:":3" %}
-          <span class="skill-tag-small">{{ skill }}</span>
-          {% endfor %}
-        </div>
-      </a>
-      {% endfor %}
+    <!-- Similar Jobs Section (Optional) -->
+    {% if similar_jobs %}
+    <div class="similar-jobs">
+      <h2>Similar Jobs You Might Like</h2>
+      <div class="similar-jobs-grid">
+        {% for similar in similar_jobs %}
+        <a href="{% url 'job_detail' similar.id %}" class="similar-job-card">
+          <h3>{{ similar.job_title }}</h3>
+          <div class="company">{{ similar.company_name }}</div>
+          <div class="skills">
+            {% for skill in similar.skills_required.split|slice:":3" %}
+            <span class="skill-tag-small">{{ skill }}</span>
+            {% endfor %}
+          </div>
+        </a>
+        {% endfor %}
+      </div>
     </div>
-  </div>
-  {% endif %}
+    {% endif %}
 
-</div>
+  </div>
 
 </body>
+
 </html>

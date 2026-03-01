@@ -44,7 +44,7 @@ def apply_job(request, job_id):
                 reason_to_join=form.cleaned_data['reason_to_join']
             )
 
-            return redirect('application-success.html')
+            return redirect('application_success')
 
     else:
         form = ApplicationForm()
@@ -111,3 +111,6 @@ def applicant_detail(request, app_id):
     return render(request, 'applicant-details.html', {
         'application': application
     })
+
+def application_success(request):
+    return render(request, 'application-success.html')

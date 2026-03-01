@@ -2,44 +2,58 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Applicant Details</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
 
-  <body>
-    <div class="container">
-      <h2>Applicant Details</h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Applicant Details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
-      <div class="card">
-        <p><strong>Name:</strong> {{ application.job_seeker.name }}</p>
-        <p><strong>Email:</strong> {{ application.job_seeker.email }}</p>
-        <p><strong>Applied for:</strong> {{ application.job.job_title }}</p>
-        <p><strong>Applied on:</strong> {{ application.applied_at }}</p>
-
-        <p><strong>College:</strong> {{ application.college }}</p>
-        <p><strong>Branch:</strong> {{ application.branch }}</p>
-        <p><strong>Result:</strong> {{ application.result }}</p>
-
-        <p>
-          <strong>Experience:</strong><br />
-          {{ application.experience }}
-        </p>
-
-        <p>
-          <strong>Reason to Join:</strong><br />
-          {{ application.reason_to_join }}
-        </p>
-
-        <a href="{{ application.resume.url }}" class="btn"> Download Resume </a>
+<body>
+  <nav>
+    <div class="nav-content">
+      <div class="nav-center">
+        <h1>Job Portal System</h1>
       </div>
+      <div class="right-side">
+        <div class="user-info">
+          {% if request.session.user_type %}
+          <span><i class="fas fa-user-circle"></i> {{ request.session.user_name }}</span>
+          <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          {% else %}
+          <a href="{% url 'login' %}" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
 
-      <br /><br />
-      <a href="{% url 'view_applicants' %}" class="btn">
-        ← Back to Applicants
+  <div class="container">
+    <h2><i class="fas fa-user-details"></i> Applicant Details</h2>
+
+    <div class="card">
+      <p><strong><i class="fas fa-user"></i> Name:</strong> {{ application.job_seeker.name }}</p>
+      <p><strong><i class="fas fa-envelope"></i> Email:</strong> {{ application.job_seeker.email }}</p>
+      <p><strong><i class="fas fa-briefcase"></i> Applied for:</strong> {{ application.job.job_title }}</p>
+      <p><strong><i class="fas fa-calendar"></i> Applied on:</strong> {{ application.applied_at }}</p>
+      <p><strong><i class="fas fa-graduation-cap"></i> College:</strong> {{ application.college }}</p>
+      <p><strong><i class="fas fa-code-branch"></i> Branch:</strong> {{ application.branch }}</p>
+      <p><strong><i class="fas fa-tasks"></i> Result:</strong> {{ application.result }}</p>
+      <p><strong><i class="fas fa-briefcase"></i> Experience:</strong><br /> {{ application.experience }}</p>
+      <p><strong><i class="fas fa-pencil-alt"></i> Reason to Join:</strong><br /> {{ application.reason_to_join }}</p>
+
+      <a href="{{ application.resume.url }}" class="btn">
+        <i class="fas fa-download"></i> Download Resume
       </a>
     </div>
-  </body>
+
+    <br /><br />
+    <a href="{% url 'view_applicants' %}" class="btn-back">
+      <i class="fas fa-arrow-left"></i> Back to Applicants
+    </a>
+  </div>
+</body>
+
 </html>
