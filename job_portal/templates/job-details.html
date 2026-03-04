@@ -8,7 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ job.job_title }} | Job Portal</title>
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <!-- Add Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -30,7 +29,6 @@
 
   <div class="job-details-page">
 
-    <!-- Hero Section -->
     <div class="job-hero">
       <h1>{{ job.job_title }}</h1>
       <div class="company-name">{{ job.company_name }}</div>
@@ -39,10 +37,8 @@
       </span>
     </div>
 
-    <!-- Main Content Grid -->
     <div class="job-content-grid">
 
-      <!-- Left Column - Main Details -->
       <div class="job-main-details">
 
         <div class="section-header">
@@ -67,10 +63,8 @@
 
       </div>
 
-      <!-- Right Column - Sidebar -->
       <div class="job-sidebar">
 
-        <!-- Company Info Card -->
         <div class="info-card">
           <h3><i class="fas fa-building"></i> Company Details</h3>
           <div class="info-item">
@@ -94,7 +88,6 @@
           </div>
         </div>
 
-        <!-- Job Details Card -->
         <div class="info-card">
           <h3><i class="fas fa-briefcase"></i> Job Details</h3>
 
@@ -120,7 +113,6 @@
 
         </div>
 
-        <!-- Action Buttons -->
         <div class="action-section">
           {% if request.session.user_type == "job_seeker" %}
           <a href="{% url 'apply_job' job.id %}" class="btn-apply">
@@ -135,7 +127,6 @@
       </div>
     </div>
 
-    <!-- Similar Jobs Section (Optional) -->
     {% if similar_jobs %}
     <div class="similar-jobs">
       <h2>Similar Jobs You Might Like</h2>

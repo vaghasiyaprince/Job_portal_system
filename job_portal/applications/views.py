@@ -1,15 +1,11 @@
-# from django.shortcuts import redirect, render
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import ApplicationForm
 from .models import Application
-from accounts.models import JobSeeker,Recruiter
+from accounts.models import JobSeeker, Recruiter
 from jobs.models import Job
-from django.contrib.auth.decorators import login_required
- 
 
 def apply_job(request, job_id):
-
     if not request.session.get("user_type"):
         request.session["required_role"] = "job_seeker"
         request.session["next_url"] = request.path
@@ -31,7 +27,7 @@ def apply_job(request, job_id):
             
             if Application.objects.filter(job=job, job_seeker=job_seeker).exists():
                 return render(request, 'application-success.html',
-                              {'message': 'You have already applied for this job.'} )
+                              {'message': 'You have already applied for this job.'})
                 
             Application.objects.create(
                 job=job,
@@ -50,7 +46,6 @@ def apply_job(request, job_id):
         form = ApplicationForm()
 
     return render(request, 'application-form.html', {'form': form, 'job': job})
-
 
 def view_applicants(request):
     if not request.session.get("user_type"):
@@ -72,30 +67,6 @@ def view_applicants(request):
     return render(request, 'applicants-list.html', {
         'applications': applications
     })
-
-# @login_required
-# def submit_application(request, job_id):
-#     job = get_object_or_404(Job, id=job_id)
-
-#     if request.method == 'POST':
-#         form = ApplicationForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             application = form.save(commit=False)
-#             application.job = job
-#             application.applicant = request.user
-#             application.save()
-#             # Optional: success message
-#             # messages.success(request, "Application submitted successfully!")
-#             return redirect('job_list')   # or wherever you want to go after apply
-
-#     else:
-#         form = ApplicationForm()
-
-#     return render(request, 'application-form.html', {
-#         'form': form,
-#         'job': job,
-#         'job_id': job_id,
-#     })
 
 def applicant_detail(request, app_id):
     if request.session.get('user_type') != 'recruiter':

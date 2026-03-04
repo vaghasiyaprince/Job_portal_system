@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.db.models import Q
 from .forms import JobForm
 from .models import Job
 from accounts.models import Recruiter
-
 
 def post_job(request):
     if not request.session.get("user_type"):
@@ -46,18 +45,14 @@ def post_job(request):
 
     return render(request, 'post-job.html')
 
-from django.db.models import Q
-
 def job_list(request):
-    
     request.session["required_role"] = "job_seeker"
     request.session["next_url"] = request.path
 
     jobs = Job.objects.all()
+    query = request.GET.get('q')
 
-    query = request.GET.get('q')   # 🔥 NEW LINE
-
-    if query:   # 🔥 NEW BLOCK
+    if query:
         jobs = jobs.filter(
             Q(job_title__icontains=query) |
             Q(company_name__icontains=query) |
@@ -66,23 +61,19 @@ def job_list(request):
 
     return render(request, 'job-list.html', {
         'jobs': jobs,
-        'query': query   # 🔥 optional (for showing search value)
+        'query': query
     })
 
-
 def job_detail(request, job_id):
-
     job = Job.objects.filter(id=job_id).first()
     if not job:
         return redirect('job_list')
 
-    # If not logged in
     if not request.session.get("user_type"):
         request.session["required_role"] = "job_seeker"
         request.session["next_url"] = request.path
         return redirect("login")
 
-    # If logged in but wrong role
     if request.session.get("user_type") != "job_seeker":
         return redirect("login")
 
@@ -90,4 +81,3 @@ def job_detail(request, job_id):
 
 def job_post_success(request):
     return render(request, 'post-job-success.html')
-
