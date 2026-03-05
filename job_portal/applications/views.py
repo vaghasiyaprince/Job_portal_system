@@ -12,7 +12,7 @@ def apply_job(request, job_id):
         return redirect("login")
 
     if request.session.get("user_type") != "job_seeker":
-        return HttpResponse("You are not a Job Seeker")
+        return redirect("job_list")
 
     try:
         job = Job.objects.get(id=job_id)
@@ -54,7 +54,7 @@ def view_applicants(request):
         return redirect("login")
 
     if request.session.get("user_type") != "recruiter":
-        return HttpResponse("You are not a Recruiter")
+        return redirect("login")
     
     recruiter = Recruiter.objects.filter(
         email=request.session['user_email']
