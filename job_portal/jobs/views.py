@@ -3,6 +3,7 @@ from django.db.models import Q
 from .forms import JobForm
 from .models import Job
 from accounts.models import Recruiter
+from . import views
 
 def post_job(request):
     if not request.session.get("user_type"):
@@ -25,6 +26,7 @@ def post_job(request):
         company_name = request.POST.get('company_name')
         skills = request.POST.get('skills_required')
         description = request.POST.get('job_description')
+        location = request.POST.get('location')
 
         if not job_title or not company_name or not skills or not description:
             return render(request, 'post-job.html', {
@@ -38,7 +40,8 @@ def post_job(request):
             job_title=job_title,
             skills_required=skills,
             job_description=description,
-            company_name=company_name
+            location=location 
+            # company_name=company_name
         )
 
         return redirect('job_post_success')

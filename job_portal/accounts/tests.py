@@ -1,67 +1,59 @@
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth.models import User
+from .models import JobSeeker, Recruiter
+from django.contrib.auth.hashers import make_password
 
 # Create your tests here.
 class RegistrationTest(TestCase):
     def test_registration_success(self):
         response = self.client.post(reverse('register'), {
-            'username': 'newuser',
-            'password1': 'testpass123',
-            'password2': 'testpass123',
+            'name': 'newuser',
             'email': 'user@example.com',
+            'password': 'testpass123',
+            'contact': '1234567890',
+            'role': 'job_seeker',
         })
         self.assertEqual(response.status_code, 302)  # redirect after success
-        self.assertTrue(User.objects.filter(username='newuser').exists())
+        self.assertTrue(JobSeeker.objects.filter(email='user@example.com').exists())
 
     def test_registration_password_mismatch(self):
-        response = self.client.post(reverse('register'), {
-            'username': 'newuser',
-            'password1': 'testpass123',
-            'password2': 'wrongpass',
-            'email': 'user@example.com',
-        })
-        self.assertEqual(response.status_code, 200)  # form re-displayed
-        self.assertFalse(User.objects.filter(username='newuser').exists())
+        # Since no password confirmation, this test doesn't apply
+        pass
 
 class LoginTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='secret')
+        self.job_seeker = JobSeeker.objects.create(
+            name='testuser',
+            email='test@example.com',
+            password=make_password('testpass123'),
+            contact='1234567890'
+        )
 
     def test_login_success(self):
         response = self.client.post(reverse('login'), {
-            'username': 'testuser',
-            'password': 'secret',
+            'email': 'test@example.com',
+            'password': 'testpass123',
         })
         self.assertEqual(response.status_code, 302)  # redirect after login
-        self.assertTrue('_auth_user_id' in self.client.session)
+        self.assertTrue('user_type' in self.client.session)
 
     def test_login_failure(self):
         response = self.client.post(reverse('login'), {
-            'username': 'testuser',
+            'email': 'test@example.com',
             'password': 'wrong',
         })
         self.assertEqual(response.status_code, 200)  # form with error
-        self.assertFalse('_auth_user_id' in self.client.session)
+        self.assertFalse('user_type' in self.client.session)
 
     def test_logout(self):
-        self.client.login(username='testuser', password='secret')
+        # Simulate login
+        session = self.client.session
+        session['user_type'] = 'job_seeker'
+        session['user_email'] = 'test@example.com'
+        session.save()
         response = self.client.get(reverse('logout'))
         self.assertEqual(response.status_code, 302)
-        self.assertFalse('_auth_user_id' in self.client.session)
+        self.assertFalse('user_type' in self.client.session)
 
 
-class ProfileTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='secret')
-        self.profile_url = reverse('profile')  # adjust to your URL name
-
-    def test_profile_requires_login(self):
-        response = self.client.get(self.profile_url)
-        self.assertRedirects(response, f"{reverse('login')}?next={self.profile_url}")
-
-    def test_profile_logged_in(self):
-        self.client.login(username='testuser', password='secret')
-        response = self.client.get(self.profile_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'testuser')  # check that username appears
+# Remove ProfileTest since no profile view

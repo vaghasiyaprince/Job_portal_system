@@ -83,7 +83,14 @@
             </div>
             <div class="info-content">
               <div class="info-label">Location</div>
-              <div class="info-value">{{ job.location|default:"Not specified" }}</div>
+              {% comment %} <div class="info-value">{{ job.location|default:"Not specified" }}</div> {% endcomment %}
+              <p>
+              {% if job.location %}
+              {{ job.location }}
+              {% else %}
+              Not specified
+              {% endif %}
+              </p>
             </div>
           </div>
         </div>

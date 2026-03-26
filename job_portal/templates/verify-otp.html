@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP</title>
+</head>
+<body>
+  <h2>Verify OTP</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  <input type="text" name="otp" placeholder="Enter OTP" required>
+  <button type="submit">Verify</button>
+</form>
+
+<p id="timer">Resend OTP in 30s</p>
+
+<a id="resendLink" href="/resend-otp/?email={{ email }}" style="display:none;">Resend OTP</a>
+
+
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+</body>
+<script>
+    let time = 30;
+    let timer = document.getElementById("timer");
+    let link = document.getElementById("resendLink");
+    
+    let interval = setInterval(() => {
+        time--;
+        timer.innerText = "Resend OTP in " + time + "s";
+        
+        if (time <= 0) {
+            clearInterval(interval);
+    timer.style.display = "none";
+    link.style.display = "block";
+}
+}, 1000);
+</script>
+</html>
