@@ -21,8 +21,8 @@
 					<div class="user-info">
 						{% if request.session.user_type %}
 						<span
-							><i class="fas fa-user-circle"></i> Welcome, {{
-							request.session.user_name }}</span
+							><i class="fas fa-user-circle"></i> Welcome, 
+							{{ request.session.user_name }}</span
 						>
 						{% endif %}
 						<a href="{% url 'logout' %}" class="logout-btn"
@@ -57,9 +57,6 @@
 				<a href="{% url 'jobseeker_dashboard' %}" class="btn">
 					<i class="fas fa-tachometer-alt"></i> Go to Dashboard
 				</a>
-				{% comment %} <a href="{% url 'job_list' %}" class="btn-back">
-					<i class="fas fa-search"></i> Browse More Jobs
-				</a> {% endcomment %}
 			</div>
 		</div>
 	</body>

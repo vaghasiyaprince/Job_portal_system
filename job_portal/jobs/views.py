@@ -40,8 +40,8 @@ def post_job(request):
             job_title=job_title,
             skills_required=skills,
             job_description=description,
-            location=location 
-            # company_name=company_name
+            location=location,
+            company_name=company_name
         )
 
         return redirect('job_post_success')

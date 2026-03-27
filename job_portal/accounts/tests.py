@@ -3,7 +3,6 @@ from django.urls import reverse
 from .models import JobSeeker, Recruiter
 from django.contrib.auth.hashers import make_password
 
-# Create your tests here.
 class RegistrationTest(TestCase):
     def test_registration_success(self):
         response = self.client.post(reverse('register'), {
@@ -13,11 +12,10 @@ class RegistrationTest(TestCase):
             'contact': '1234567890',
             'role': 'job_seeker',
         })
-        self.assertEqual(response.status_code, 302)  # redirect after success
+        self.assertEqual(response.status_code, 302)  
         self.assertTrue(JobSeeker.objects.filter(email='user@example.com').exists())
 
     def test_registration_password_mismatch(self):
-        # Since no password confirmation, this test doesn't apply
         pass
 
 class LoginTest(TestCase):
@@ -34,7 +32,7 @@ class LoginTest(TestCase):
             'email': 'test@example.com',
             'password': 'testpass123',
         })
-        self.assertEqual(response.status_code, 302)  # redirect after login
+        self.assertEqual(response.status_code, 302)  
         self.assertTrue('user_type' in self.client.session)
 
     def test_login_failure(self):
@@ -42,11 +40,10 @@ class LoginTest(TestCase):
             'email': 'test@example.com',
             'password': 'wrong',
         })
-        self.assertEqual(response.status_code, 200)  # form with error
+        self.assertEqual(response.status_code, 200) 
         self.assertFalse('user_type' in self.client.session)
 
     def test_logout(self):
-        # Simulate login
         session = self.client.session
         session['user_type'] = 'job_seeker'
         session['user_email'] = 'test@example.com'
@@ -56,4 +53,3 @@ class LoginTest(TestCase):
         self.assertFalse('user_type' in self.client.session)
 
 
-# Remove ProfileTest since no profile view

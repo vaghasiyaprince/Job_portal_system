@@ -33,12 +33,13 @@
   <div class="container">
     <h2><i class="fas fa-search"></i> Available Jobs</h2>
 
-    <form method="GET" class="search-form">
-      <div class="search-wrapper">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" name="q" placeholder="Search jobs by company, title or category..."
-          value="{{ request.GET.q }}" />
-      </div>
+    <form method="GET" action="{% url 'job_list' %}" class="search-form">
+        <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" name="q" placeholder="Search jobs by company, title or category..."
+              value="{{ request.GET.q }}" />
+         <button type="submit" class="search-btn">Search</button>
+        </div>
     </form>
 
     <div class="job-grid">
