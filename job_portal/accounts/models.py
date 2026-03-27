@@ -27,8 +27,8 @@ class JobSeeker(models.Model):
     contact = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)
-    otp = models.CharField(max_length=6, blank=True, null=True)
-    otp_created_at = models.DateTimeField(blank=True, null=True)
+    # otp = models.CharField(max_length=6, blank=True, null=True)
+    # otp_created_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -39,8 +39,8 @@ class Recruiter(models.Model):
     contact = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)
-    otp = models.CharField(max_length=6, blank=True, null=True)
-    otp_created_at = models.DateTimeField(blank=True, null=True)
+    # otp = models.CharField(max_length=6, blank=True, null=True)
+    # otp_created_at = models.DateTimeField(blank=True, null=True)
     company_name = models.CharField(max_length=150)
 
     def __str__(self):
