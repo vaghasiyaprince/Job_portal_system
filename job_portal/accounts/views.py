@@ -75,13 +75,13 @@ def login_view(request):
 
             job_seeker = JobSeeker.objects.filter(email=email).first()
             if job_seeker and check_password(password, job_seeker.password):
-                # If a specific role was required, verify it matches
+                
                 if required_role and required_role != "job_seeker":
                     return render(request, "login.html", {
                         "form": form,
                         "error": "This page requires a Recruiter account. Please login as a Recruiter."
                     })
-                # user.contact = full_contact
+                
                 
                 request.session["user_type"] = "job_seeker"
                 request.session["user_email"] = email
@@ -131,23 +131,6 @@ def login_view(request):
     form = LoginForm()
     return render(request, "login.html", {"form": form})
 
-def reset_password_otp(request):
-    email = request.GET.get("email")
-
-    user = JobSeeker.objects.filter(email=email).first() or Recruiter.objects.filter(email=email).first()
-
-    if request.method == "POST":
-        password = request.POST.get("password")
-        confirm_password = request.POST.get("confirm_password")
-
-        if password != confirm_password:
-            return render(request, "reset-password.html", {"error": "Passwords do not match"})
-
-        user.password = make_password(password)
-
-        return redirect("login")
-
-    return render(request, "reset-password.html")
 
 # ================= LOGOUT =================
 def logout_view(request):

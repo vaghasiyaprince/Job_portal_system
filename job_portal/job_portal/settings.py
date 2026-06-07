@@ -14,6 +14,7 @@ from pathlib import Path
 
 import os  
 import environ
+import mimetypes
 
 env = environ.Env()
 
@@ -122,7 +123,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+mimetypes.add_type("text/css", ".css", True)
+
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']  # Add this line to specify the static files directory
 
 MEDIA_URL = '/media/'

@@ -3,7 +3,6 @@ from django.db import models
 
 class User(AbstractUser):
     ROLE_CHOICES = (
-        ('admin', 'Admin'),
         ('jobseeker', 'Job Seeker'),
         ('recruiter', 'Recruiter'),
     )
