@@ -2,62 +2,54 @@
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<title>{% block title%} Success {% endblock %}</title>
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-		<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-	</head>
 
-	<body>
-		<nav>
-			<div class="nav-content">
-				<div class="nav-center">
-					<h1>Job Portal System</h1>
-				</div>
-				<div class="right-side">
-					<div class="user-info">
-						{% if request.session.user_type %}
-						<span
-							><i class="fas fa-user-circle"></i> Welcome, 
-							{{ request.session.user_name }}</span
-						>
-						{% endif %}
-						<a href="{% url 'logout' %}" class="logout-btn"
-							><i class="fas fa-sign-out-alt"></i> Logout</a
-						>
-					</div>
+<head>
+	<meta charset="UTF-8" />
+	<title>{% block title%} Success {% endblock %}</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+
+<body>
+	<nav>
+		<div class="nav-content">
+			<div class="nav-center">
+				<h1>Job Portal System</h1>
+			</div>
+			<div class="right-side">
+				<div class="user-info">
+					<a href="{% url 'jobseeker_profile' %}" class="profile-nav-btn">
+						<i class="fas fa-user-circle"></i> {{ request.session.user_name }}
+					</a>
+					<a href="{% url 'logout' %}" class="logout-btn"> Logout </a>
 				</div>
 			</div>
-		</nav>
+		</div>
+	</nav>
 
-		<div class="container success">
-			<i
-				class="fas fa-check-circle fa-5x"
-				style="color: #10b981; margin-bottom: 1rem"></i>
-			{% if message %}
-			<h2>{{ message }}</h2>
-			{% else %}
-			<h2>Application Submitted Successfully</h2>
-			<p>
-				Your application has been received. The recruiter will review it
-				shortly.
-			</p>
-			{% endif %}
+	<div class="container success">
+		<i class="fas fa-check-circle fa-5x" style="color: #10b981; margin-bottom: 1rem"></i>
+		{% if message %}
+		<h2>{{ message }}</h2>
+		{% else %}
+		<h2>Application Submitted Successfully</h2>
+		<p>
+			Your application has been received. The recruiter will review it
+			shortly.
+		</p>
+		{% endif %}
 
-			<div
-				style="
+		<div style="
 					display: flex;
 					gap: 1rem;
 					justify-content: center;
 					flex-wrap: wrap;
 				">
-				<a href="{% url 'jobseeker_dashboard' %}" class="btn">
-					<i class="fas fa-tachometer-alt"></i> Go to Dashboard
-				</a>
-			</div>
+			<a href="{% url 'job_list' %}" class="btn">
+				<i class="fas fa-tachometer-alt"></i> Browse More Jobs
+			</a>
 		</div>
-	</body>
+	</div>
+</body>
+
 </html>

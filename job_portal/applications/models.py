@@ -6,6 +6,13 @@ import os
 
 
 class Application(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('reviewed', 'Reviewed'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    )
+    
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     job_seeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE)
 
@@ -16,7 +23,8 @@ class Application(models.Model):
     experience = models.TextField()
     reason_to_join = models.TextField()
     applied_at = models.DateTimeField(auto_now_add=True)
-    
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')  # ADD THIS
+
     def __str__(self):
         return f"{self.job_seeker.name} - {self.job.job_title}"
 

@@ -21,7 +21,20 @@
 
       <div class="right-side">
         <div class="user-info">
-          <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+          {% if request.session.user_type %}
+          {% if request.session.user_type == 'recruiter' %}
+          <a href="{% url 'recruiter_profile' %}" class="profile-nav-btn">
+            <i class="fas fa-user-circle"></i> {{ request.session.user_name }}
+          </a>
+          {% else %}
+          <a href="{% url 'jobseeker_profile' %}" class="profile-nav-btn">
+            <i class="fas fa-user-circle"></i> {{ request.session.user_name }}
+          </a>
+          {% endif %}
+          <a href="{% url 'logout' %}" class="logout-btn"> Logout </a>
+          {% else %}
+          <a href="{% url 'login' %}" class="login-btn"> Login </a>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -84,11 +97,11 @@
             <div class="info-content">
               <div class="info-label">Location</div>
               <p>
-              {% if job.location %}
-              {{ job.location }}
-              {% else %}
-              Not specified
-              {% endif %}
+                {% if job.location %}
+                {{ job.location }}
+                {% else %}
+                Not specified
+                {% endif %}
               </p>
             </div>
           </div>
@@ -126,8 +139,8 @@
           </a>
           {% endif %}
 
-          <a href="{% url 'jobseeker_dashboard' %}" class="btn-back">
-            <i class="fas fa-arrow-left"></i> Back to Dashboard
+          <a href="{% url 'job_list' %}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Jobs
           </a>
         </div>
       </div>

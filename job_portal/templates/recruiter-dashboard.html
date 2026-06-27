@@ -18,12 +18,13 @@
       </div>
       <div class="right-side">
         <div class="user-info">
-         
-          {% if request.session.user_email and request.session.user_type == "recruiter" %}
-          <span><i class="fas fa-user-circle"></i> Welcome, {{ request.session.user_email }}</span>
-          <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          {% if request.session.user_type == 'recruiter' %}
+          <a href="{% url 'recruiter_profile' %}" class="profile-nav-btn">
+            <i class="fas fa-user-circle"></i> {{ request.session.user_name }}
+          </a>
+          <a href="{% url 'logout' %}" class="logout-btn"> Logout </a>
           {% else %}
-          <a href="{% url 'login' %}" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+          <a href="{% url 'login' %}" class="login-btn"> Login </a>
           {% endif %}
         </div>
       </div>

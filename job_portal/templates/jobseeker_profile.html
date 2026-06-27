@@ -1,0 +1,98 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile - Job Seeker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+<body>
+  <nav>
+    <div class="nav-content">
+      <div class="nav-center">
+        <h1>Job Portal System</h1>
+      </div>
+      <div class="right-side">
+        <div class="user-info">
+          <a href="{% url 'jobseeker_profile' %}" class="profile-nav-btn">
+            <i class="fas fa-user-circle"></i> {{ request.session.user_name }}
+          </a>
+          <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="profile-page-wrapper">
+    <!-- Profile Header -->
+    <div class="profile-header-card">
+      <div class="profile-avatar-large">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="profile-name-large">{{ user.name }}</div>
+      <span class="profile-role-badge-large">
+        <i class="fas fa-user-tie"></i> Job Seeker
+      </span>
+    </div>
+
+    <!-- Profile Body -->
+    <div class="profile-body-card">
+      <div class="profile-section-title">
+        <i class="fas fa-id-card"></i> Personal Information
+      </div>
+
+      <div class="profile-info-grid">
+        <div class="profile-info-item">
+          <div class="profile-info-icon-box">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="profile-info-text">
+            <div class="profile-info-label-text">Email Address</div>
+            <div class="profile-info-value-text">{{ user.email }}</div>
+          </div>
+        </div>
+
+        <div class="profile-info-item">
+          <div class="profile-info-icon-box">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="profile-info-text">
+            <div class="profile-info-label-text">Contact Number</div>
+            <div class="profile-info-value-text">
+              {% if user.contact %}
+                {{ user.contact }}
+              {% else %}
+                <span class="not-provided">Not provided</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-info-item">
+          <div class="profile-info-icon-box">
+            <i class="fas fa-user-tag"></i>
+          </div>
+          <div class="profile-info-text">
+            <div class="profile-info-label-text">Account Type</div>
+            <div class="profile-info-value-text">
+              <span style="color: #0d9488; font-weight: 600;">Job Seeker</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="profile-action-buttons">
+        <a href="{% url 'job_list' %}" class="profile-btn-primary">
+          <i class="fas fa-search"></i> Browse Jobs
+        </a>
+        <a href="{% url 'logout' %}" class="profile-btn-danger">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -19,11 +19,13 @@
       </div>
       <div class="right-side">
         <div class="user-info">
-          {% if request.session.user_type == "job_seeker" %}
-          <span><i class="fas fa-user-circle"></i> {{ request.session.user_name }}</span>
-          <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          {% if request.session.user_type == 'job_seeker' %}
+          <a href="{% url 'jobseeker_profile' %}" class="profile-nav-btn">
+            <i class="fas fa-user-circle"></i> {{ request.session.user_name }}
+          </a>
+          <a href="{% url 'logout' %}" class="logout-btn"> Logout </a>
           {% else %}
-          <a href="{% url 'login' %}" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+          <a href="{% url 'login' %}" class="login-btn"> Login </a>
           {% endif %}
         </div>
       </div>
@@ -34,12 +36,12 @@
     <h2><i class="fas fa-search"></i> Available Jobs</h2>
 
     <form method="GET" action="{% url 'job_list' %}" class="search-form">
-        <div class="search-wrapper">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" name="q" placeholder="Search jobs by company, title or category..."
-              value="{{ request.GET.q }}" />
-         <button type="submit" class="search-btn">Search</button>
-        </div>
+      <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" name="q" placeholder="Search jobs by company, title or category..."
+          value="{{ request.GET.q }}" />
+        <button type="submit" class="search-btn">Search</button>
+      </div>
     </form>
 
     <div class="job-grid">

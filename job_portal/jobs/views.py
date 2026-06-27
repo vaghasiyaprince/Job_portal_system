@@ -5,6 +5,7 @@ from .models import Job
 from accounts.models import Recruiter
 from . import views
 
+
 def post_job(request):
     if not request.session.get("user_type"):
         request.session["required_role"] = "recruiter"

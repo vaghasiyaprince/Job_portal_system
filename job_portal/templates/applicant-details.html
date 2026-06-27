@@ -6,12 +6,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>{% block title%}Applicant Details{% endblock %}</title> 
+
+  <title>{% block title%}Applicant Details{% endblock %}</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
- 
+
 <body>
   <nav>
     <div class="nav-content">
@@ -20,12 +20,10 @@
       </div>
       <div class="right-side">
         <div class="user-info">
-          {% if request.session.user_type %}
-          <span><i class="fas fa-user-circle"></i> {{ request.session.user_name }}</span>
-          <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-          {% else %}
-          <a href="{% url 'login' %}" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
-          {% endif %}
+          <a href="{% url 'recruiter_profile' %}" class="profile-nav-btn">
+            <i class="fas fa-user-circle"></i> {{ request.session.user_name }}
+          </a>
+          <a href="{% url 'logout' %}" class="logout-btn"> Logout </a>
         </div>
       </div>
     </div>

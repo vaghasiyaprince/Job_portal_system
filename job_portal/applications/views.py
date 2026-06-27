@@ -47,6 +47,7 @@ def apply_job(request, job_id):
 
     return render(request, 'application-form.html', {'form': form, 'job': job})
 
+
 def view_applicants(request):
     if not request.session.get("user_type"):
         request.session["required_role"] = "recruiter"
@@ -68,6 +69,7 @@ def view_applicants(request):
         'applications': applications
     })
 
+
 def applicant_detail(request, app_id):
     if request.session.get('user_type') != 'recruiter':
         request.session["required_role"] = "recruiter"
@@ -82,6 +84,7 @@ def applicant_detail(request, app_id):
     return render(request, 'applicant-details.html', {
         'application': application
     })
+
 
 def application_success(request):
     return render(request, 'application-success.html')

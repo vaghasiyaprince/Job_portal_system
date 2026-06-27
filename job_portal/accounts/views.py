@@ -9,7 +9,6 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 import random
 
-
 # ================= REGISTER =================
 def register(request):
     if request.method == "POST":
@@ -102,7 +101,7 @@ def login_view(request):
                 if required_role and required_role != "recruiter":
                     return render(request, "login.html", {
                         "form": form,
-                        "error": "This page requires a Recruiter account. Please login as a job seeker."
+                        "error": "This page requires a Job seeker account. Please login as a job seeker."
                     })
 
                 
@@ -138,12 +137,6 @@ def logout_view(request):
     return redirect("home")
 
 # ================= DASHBOARD =================
-def jobseeker_dashboard(request):
-    if request.session.get('user_type') != 'job_seeker':
-        return redirect('login')
-
-    jobs = Job.objects.all()
-    return render(request, 'job-list.html', {'jobs': jobs})
 
 def recruiter_dashboard(request):
     
@@ -161,3 +154,31 @@ def recruiter_dashboard(request):
 # ================= HOME =================
 def home(request):
     return render(request, "index.html")
+
+
+def jobseeker_profile(request):
+    if request.session.get('user_type') != 'job_seeker':
+        return redirect('login')
+    user = JobSeeker.objects.filter(email=request.session['user_email']).first()
+    return render(request, 'jobseeker_profile.html', {'user': user})
+
+def recruiter_profile(request):
+    if request.session.get('user_type') != 'recruiter':
+        return redirect('login')
+    
+    user = Recruiter.objects.filter(email=request.session['user_email']).first()
+    
+    # Get stats for the recruiter
+    from jobs.models import Job
+    from applications.models import Application
+    
+    jobs_posted = Job.objects.filter(recruiter=user).count()
+    active_jobs = Job.objects.filter(recruiter=user).count()  # You can add status filter if needed
+    total_applications = Application.objects.filter(job__recruiter=user).count()
+    
+    return render(request, 'recruiter_profile.html', {
+        'user': user,
+        'jobs_posted': jobs_posted,
+        'active_jobs': active_jobs,
+        'total_applications': total_applications
+    })
